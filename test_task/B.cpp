@@ -6,31 +6,59 @@
 class SummerNumberInConsole {
 private:
     std::vector<std::string> strings_;
-    int result_;
+    long long result_;
+
+    [[nodiscard]] auto IsMinus(const char symbol) const noexcept -> bool {
+        return symbol == '-';
+    }
 
     [[nodiscard]] auto IsDigit(const char symbol) const noexcept -> bool {
         return isdigit(symbol) != 0;
     }
 
-    [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> int {
-        int result = 0;
+    [[nodiscard]] auto IsDigitOrMinus(const char symbol) const noexcept -> bool {
+        return isdigit(symbol) != 0 || symbol == '-';
+    }
+
+    [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> long long {
+        long long result = 0;
         std::string_view subString(string);
         auto currentChar = subString.begin();
-        bool isDeleting = !IsDigit(*currentChar);
+        bool isDeleting = !IsDigitOrMinus(*currentChar);
 
-        while (currentChar++ != subString.end()) {
-            if (IsDigit(*currentChar) && isDeleting) {
+        while (currentChar != subString.end()) {
+            if (IsMinus(*currentChar) && !IsDigit(*std::next(currentChar))) {
+                currentChar++;
+                isDeleting = true;
+                continue;
+            }
+            if (IsDigitOrMinus(*currentChar) && isDeleting) {
                 subString.remove_prefix(std::distance(subString.begin(), currentChar));
                 isDeleting = false;
             }
-            else if ((!isDeleting && IsDigit(*currentChar)) || (isDeleting && !IsDigit(*currentChar))) {
-                continue;
+            if (!isDeleting && IsDigitOrMinus(*currentChar)) {
+                if (IsMinus(*currentChar) && !IsDigitOrMinus(*std::next(currentChar))) {
+                    result += std::stoi(std::string(subString.begin(), std::next(currentChar)));
+                    subString.remove_prefix(std::distance(subString.begin(), std::next(currentChar)));
+                    isDeleting = true;
+                }
+                if (IsDigit(*currentChar) && !IsDigit(*std::next(currentChar))) {
+                    result += std::stoi(std::string(subString.begin(), std::next(currentChar)));
+                    subString.remove_prefix(std::distance(subString.begin(), std::next(currentChar)));
+                    isDeleting = true;
+                }
             }
             else if (!isDeleting && !IsDigit(*currentChar)) {
                 result += std::stoi(std::string(subString.begin(), currentChar));
                 subString.remove_prefix(std::distance(subString.begin(), currentChar));
                 isDeleting = true;
+
             }
+            if (isDeleting && !IsDigitOrMinus(*currentChar)) {
+                currentChar++;
+                continue;
+            }
+            currentChar++;
         }
 
         return result;
@@ -43,7 +71,7 @@ public:
         }
     }
 
-    [[nodiscard]] auto GetSum() noexcept -> int{
+    [[nodiscard]] auto GetSum() noexcept -> long long {
         for (const auto& string : strings_) {
             result_ += SumNumberInString(string);
         }
