@@ -3,6 +3,10 @@
 #include <string_view>
 #include <algorithm>
 
+#define ADD_DELETE  result += std::stoll(std::string(subString.begin(), std::next(currentChar)));       \
+                    subString.remove_prefix(std::distance(subString.begin(), std::next(currentChar)));  \
+                    isDeleting = true;
+
 class SummerNumberInConsole {
 private:
     std::vector<std::string> strings_;
@@ -37,22 +41,13 @@ private:
                 isDeleting = false;
             }
             if (!isDeleting && IsDigitOrMinus(*currentChar)) {
-                if (IsMinus(*currentChar) && !IsDigitOrMinus(*std::next(currentChar))) {
-                    result += std::stoi(std::string(subString.begin(), std::next(currentChar)));
-                    subString.remove_prefix(std::distance(subString.begin(), std::next(currentChar)));
-                    isDeleting = true;
-                }
-                if (IsDigit(*currentChar) && !IsDigit(*std::next(currentChar))) {
-                    result += std::stoi(std::string(subString.begin(), std::next(currentChar)));
-                    subString.remove_prefix(std::distance(subString.begin(), std::next(currentChar)));
-                    isDeleting = true;
+                if ((IsMinus(*currentChar) && !IsDigitOrMinus(*std::next(currentChar))) ||
+                    ((IsDigit(*currentChar) && !IsDigit(*std::next(currentChar))))) {
+                    ADD_DELETE
                 }
             }
             else if (!isDeleting && !IsDigit(*currentChar)) {
-                result += std::stoi(std::string(subString.begin(), currentChar));
-                subString.remove_prefix(std::distance(subString.begin(), currentChar));
-                isDeleting = true;
-
+                ADD_DELETE
             }
             if (isDeleting && !IsDigitOrMinus(*currentChar)) {
                 currentChar++;
@@ -60,7 +55,6 @@ private:
             }
             currentChar++;
         }
-
         return result;
     }
 public:
@@ -83,6 +77,6 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     SummerNumberInConsole summer;
-    std::cout << summer.GetSum() << std::endl;
+    std::cerr << summer.GetSum() << std::endl;
     return 0;
 }
