@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <string>
 
+#define MAX_LENGTH_NUMBER 10
 
 class SummerNumberInConsole {
 private:
@@ -19,14 +20,14 @@ private:
     }
 
 
-    [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> long long {
+    [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> int64_t {
         int64_t result = 0;
         int64_t intermediateResult = 0;
         auto nearestCropPtr = string.end();
         for (auto currentCharPtr = string.begin(); currentCharPtr != string.end(); currentCharPtr++) {
             if ((IsDigit(*currentCharPtr)) || (IsMinus(*currentCharPtr) && IsDigit(*std::next(currentCharPtr)))) {
-                std::distance(currentCharPtr, nearestCropPtr) > 10?
-                    nearestCropPtr = std::next(currentCharPtr, 10):
+                std::distance(currentCharPtr, nearestCropPtr) > MAX_LENGTH_NUMBER ?
+                    nearestCropPtr = std::next(currentCharPtr, MAX_LENGTH_NUMBER):
                     nearestCropPtr = string.end();
                 intermediateResult = std::stoll(std::string(currentCharPtr, nearestCropPtr));
                 result += intermediateResult;
@@ -44,7 +45,7 @@ public:
         }
     }
 
-    [[nodiscard]] auto GetSum() noexcept -> long long {
+    [[nodiscard]] auto GetSum() noexcept -> int64_t {
         for (const auto& string : strings_) {
             result_ += SumNumberInString(string);
         }
