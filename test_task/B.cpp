@@ -22,15 +22,20 @@ private:
     [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> long long {
         int64_t result = 0;
         int64_t intermediateResult = 0;
+        auto nearestCropPtr = string.end();
         for (auto currentCharPtr = string.begin(); currentCharPtr != string.end(); currentCharPtr++) {
             if ((IsDigit(*currentCharPtr)) || (IsMinus(*currentCharPtr) && IsDigit(*std::next(currentCharPtr)))) {
-                intermediateResult = std::stoll(std::string(currentCharPtr, string.end()));
+                std::distance(currentCharPtr, nearestCropPtr) > 10?
+                    nearestCropPtr = std::next(currentCharPtr, 10):
+                    nearestCropPtr = string.end();
+                intermediateResult = std::stoll(std::string(currentCharPtr, nearestCropPtr));
                 result += intermediateResult;
                 currentCharPtr = std::next(currentCharPtr, std::to_string(intermediateResult).size() - 1);
             }
         }
         return result;
     }
+
 public:
     SummerNumberInConsole() : result_(0) {
         std::string buffer;
