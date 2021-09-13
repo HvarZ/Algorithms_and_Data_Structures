@@ -22,11 +22,11 @@ private:
 
     [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> int64_t {
         int64_t result = 0;
-        int64_t intermediateResult = 0;
+        int64_t intermediateResult;
         auto nearestCropPtr = string.end();
         for (auto currentCharPtr = string.begin(); currentCharPtr != string.end(); currentCharPtr++) {
             if ((IsDigit(*currentCharPtr)) || (IsMinus(*currentCharPtr) && IsDigit(*std::next(currentCharPtr)))) {
-                std::distance(currentCharPtr, nearestCropPtr) > MAX_LENGTH_NUMBER ?
+                std::distance(currentCharPtr, string.end()) > MAX_LENGTH_NUMBER ?
                     nearestCropPtr = std::next(currentCharPtr, MAX_LENGTH_NUMBER):
                     nearestCropPtr = string.end();
                 intermediateResult = std::stoll(std::string(currentCharPtr, nearestCropPtr));
