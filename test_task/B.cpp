@@ -23,7 +23,7 @@ private:
     [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> int64_t {
         int64_t result = 0;
         int64_t intermediateResult;
-        auto nearestCropPtr = string.end();
+        decltype(string.end()) nearestCropPtr;
         for (auto currentCharPtr = string.begin(); currentCharPtr != string.end(); currentCharPtr++) {
             if ((IsDigit(*currentCharPtr)) || (IsMinus(*currentCharPtr) && IsDigit(*std::next(currentCharPtr)))) {
                 std::distance(currentCharPtr, string.end()) > MAX_LENGTH_NUMBER ?
