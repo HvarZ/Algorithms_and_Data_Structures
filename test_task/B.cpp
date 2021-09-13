@@ -1,17 +1,15 @@
 #include <iostream>
 #include <vector>
-#include <string_view>
 #include <algorithm>
+#include <string>
 
-#define ADD_DELETE  result += std::stoll(std::string(subString.begin(), std::next(currentChar)));       \
-                    subString.remove_prefix(std::distance(subString.begin(), std::next(currentChar)));  \
-                    isDeleting = true;
 
 class SummerNumberInConsole {
 private:
     std::vector<std::string> strings_;
-    long long result_;
+    int64_t result_;
 
+private:
     [[nodiscard]] auto IsMinus(const char symbol) const noexcept -> bool {
         return symbol == '-';
     }
@@ -20,40 +18,16 @@ private:
         return isdigit(symbol) != 0;
     }
 
-    [[nodiscard]] auto IsDigitOrMinus(const char symbol) const noexcept -> bool {
-        return isdigit(symbol) != 0 || symbol == '-';
-    }
 
     [[nodiscard]] auto SumNumberInString(const std::string& string) const noexcept -> long long {
-        long long result = 0;
-        std::string_view subString(string);
-        auto currentChar = subString.begin();
-        bool isDeleting = !IsDigitOrMinus(*currentChar);
-
-        while (currentChar != subString.end()) {
-            if (IsMinus(*currentChar) && !IsDigit(*std::next(currentChar))) {
-                currentChar++;
-                isDeleting = true;
-                continue;
+        int64_t result = 0;
+        int64_t intermediateResult = 0;
+        for (auto currentCharPtr = string.begin(); currentCharPtr != string.end(); currentCharPtr++) {
+            if ((IsDigit(*currentCharPtr)) || (IsMinus(*currentCharPtr) && IsDigit(*std::next(currentCharPtr)))) {
+                intermediateResult = std::stoll(std::string(currentCharPtr, string.end()));
+                result += intermediateResult;
+                currentCharPtr = std::next(currentCharPtr, std::to_string(intermediateResult).size() - 1);
             }
-            if (IsDigitOrMinus(*currentChar) && isDeleting) {
-                subString.remove_prefix(std::distance(subString.begin(), currentChar));
-                isDeleting = false;
-            }
-            if (!isDeleting && IsDigitOrMinus(*currentChar)) {
-                if ((IsMinus(*currentChar) && !IsDigitOrMinus(*std::next(currentChar))) ||
-                    ((IsDigit(*currentChar) && !IsDigit(*std::next(currentChar))))) {
-                    ADD_DELETE
-                }
-            }
-            else if (!isDeleting && !IsDigit(*currentChar)) {
-                ADD_DELETE
-            }
-            if (isDeleting && !IsDigitOrMinus(*currentChar)) {
-                currentChar++;
-                continue;
-            }
-            currentChar++;
         }
         return result;
     }
@@ -74,9 +48,7 @@ public:
 };
 
 int main() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
     SummerNumberInConsole summer;
-    std::cerr << summer.GetSum() << std::endl;
+    std::cout << summer.GetSum() << std::endl;
     return 0;
 }
