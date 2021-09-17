@@ -11,7 +11,8 @@ private:
     std::string* data_;
     std::ofstream writingStream_;
     size_t capacity_;
-    size_t size_;
+    int64_t front_;
+    int64_t tail_;
 
 public:
     Queue();
@@ -22,46 +23,53 @@ public:
     void pop();
 };
 
-Queue::Queue() : data_(nullptr), capacity_(0), size_(0) {}
+Queue::Queue() : data_(nullptr), capacity_(0), front_(-1), tail_(-1) {}
 
 Queue::~Queue() {
     delete [] data_;
 }
 
 Queue::Queue(const std::string &writingFileName, const size_t capacity)
-                            : data_(new std::string[capacity]), capacity_(capacity), size_(0) {
+            : data_(new std::string[capacity]), capacity_(capacity), front_(-1), tail_(-1) {
     writingStream_.open(writingFileName, std::ios::app);
 }
 
 void Queue::push(const std::string &value) {
-    if (size_ == capacity_) {
+    if ((front_ == 0 && tail_ == capacity_ - 1) || (front_ == tail_ + 1)) {
         writingStream_ << "overflow" << std::endl;
         return;
     }
-    data_[size_++] = value;
+    if (front_ == -1) {
+        front_++;
+    }
+    tail_ = (tail_ + 1) % capacity_;
+    data_[tail_] = value;
 }
 
 void Queue::print() noexcept {
-    if (!size_) {
+    if (front_ == -1) {
         writingStream_ << "empty" << std::endl;
         return;
     }
-    for (size_t i = 0; i < size_ - 1; ++i) {
+    for(auto i = front_; i != tail_; i = (i + 1) % capacity_) {
         writingStream_ << data_[i] << " ";
     }
-    writingStream_ << data_[size_ - 1] << std::endl;
+    writingStream_ << data_[tail_] << std::endl;
 }
 
 void Queue::pop() {
-    if (!size_) {
+    if (front_ == -1) {
         writingStream_ << "underflow" << std::endl;
         return;
     }
-    writingStream_ << data_[0] << std::endl;
-    for (size_t i = 0; i < size_ - 1; ++i) {
-        data_[i] = data_[i + 1];
+    writingStream_ << data_[front_] << std::endl;
+
+    if (front_ == tail_) {
+        front_ = -1; tail_ = -1;
     }
-    size_--;
+    else {
+        front_ = (front_ + 1) % capacity_;
+    }
 }
 
 class Receiver {
@@ -88,8 +96,12 @@ private:
     [[nodiscard]] auto IsOneSpace(const std::string& string) const noexcept -> bool {
         size_t numberSpace = 0;
         for (const auto& symbol : string) {
-            if (symbol == ' ') numberSpace++;
-            if (numberSpace > 1) return false;
+            if (symbol == ' ') {
+                numberSpace++;
+            }
+            if (numberSpace > 1) {
+                return false;
+            }
         }
         return true;
     }
@@ -144,16 +156,16 @@ public:
         }
         if (IsValidCommand(inputLines_[numberStrSetSize])) {
 
-            Queue stack(writingFileName, std::stoi(GetValue(inputLines_[numberStrSetSize])));
+            Queue queue(writingFileName, std::stoi(GetValue(inputLines_[numberStrSetSize])));
             for (size_t i = numberStrSetSize + 1; i < inputLines_.size(); ++i) {
                 if (GetCommand(inputLines_[i]) == "push" && IsValidCommand(inputLines_[i])) {
-                    stack.push(GetValue(inputLines_[i]));
+                    queue.push(GetValue(inputLines_[i]));
                 }
                 else if (GetCommand(inputLines_[i]) == "print" && IsValidCommand(inputLines_[i])) {
-                    stack.print();
+                    queue.print();
                 }
                 else if (GetCommand(inputLines_[i]) == "pop" && IsValidCommand(inputLines_[i])) {
-                    stack.pop();
+                    queue.pop();
                 }
                 else {
                     writingStream_ << "error" << std::endl;
@@ -170,3 +182,4 @@ int main(int argc, char* argv[]) {
     receiver.Output(argv[2]);
     return 0;
 }
+
