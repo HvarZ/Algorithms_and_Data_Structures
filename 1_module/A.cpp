@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
 #include <string>
 
@@ -7,7 +6,7 @@
 
 class SummerNumberInConsole {
 private:
-    std::vector<std::string> strings_;
+    std::string currentString;
     int64_t result_;
 
 private:
@@ -41,20 +40,18 @@ public:
     SummerNumberInConsole() : result_(0) {
         std::string buffer;
         while (std::getline(std::cin, buffer, '\n')) {
-            strings_.push_back(std::move(buffer));
+            currentString = std::move(buffer);
+            result_ += SumNumberInString(currentString);
         }
     }
 
-    [[nodiscard]] auto GetSum() noexcept -> int64_t {
-        for (const auto& string : strings_) {
-            result_ += SumNumberInString(string);
-        }
+    [[nodiscard]] auto GetResult() const noexcept -> int64_t {
         return result_;
     }
 };
 
 int main() {
     SummerNumberInConsole summer;
-    std::cout << summer.GetSum() << std::endl;
+    std::cout << summer.GetResult() << std::endl;
     return 0;
 }
