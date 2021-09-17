@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <string>
 #include <utility>
 #include <algorithm>
@@ -21,14 +20,11 @@ public:
 
 Stack::Stack() : data_(nullptr), capacity_(0), size_(0) {}
 
-
 Stack::~Stack() {
     delete [] data_;
 }
 
-
 Stack::Stack(const size_t capacity) : data_(new std::string[capacity]), capacity_(capacity), size_(0) {}
-
 
 void Stack::push(const std::string &value) {
     if (size_ >= capacity_) {
@@ -38,7 +34,6 @@ void Stack::push(const std::string &value) {
     data_[size_++] =  value;
 }
 
-
 void Stack::pop() {
     if (!size_) {
         std::cout << "underflow" << std::endl;
@@ -46,7 +41,6 @@ void Stack::pop() {
     }
     std::cout << data_[--size_] << std::endl;
 }
-
 
 void Stack::print() const noexcept {
     if (!size_) {
@@ -60,104 +54,83 @@ void Stack::print() const noexcept {
     std::cout << std::endl;
 }
 
-class Receiver {
-private:
-    std::vector<std::string> inputLines_;
+auto IsZeroSpace(const std::string& string) noexcept -> bool {
+    return std::find(string.begin(), string.end(), ' ') == string.end();
+}
 
-private:
-    [[nodiscard]] auto FindSetSize() const noexcept -> size_t {
-        for (size_t i = 0; i < inputLines_.size(); ++i) {
-            if (inputLines_[i].find("set_size") != std::string::npos) {
-                return i;
-            }
-        }
-        return -1;
+auto IsOneSpace(const std::string& string) noexcept -> bool {
+    size_t numberSpace = 0;
+    for (const auto& symbol : string) {
+        if (symbol == ' ') numberSpace++;
+        if (numberSpace > 1) return false;
     }
+    return true;
+}
 
-    [[nodiscard]] auto IsZeroSpace(const std::string& string) const noexcept -> bool {
-        return std::find(string.begin(), string.end(), ' ') == string.end();
+auto GetCommand(const std::string& string) noexcept -> std::string {
+    return std::string(string.begin(), std::find(string.begin(), string.end(), ' '));
+}
+
+auto GetValue(const std::string& string) noexcept -> std::string {
+    return std::string(std::next(std::find(string.begin(), string.end(), ' ')),
+                       string.end());
+}
+
+auto IsValidCommand(const std::string& string) noexcept -> bool {
+    auto command = GetCommand(string);
+
+    if ((command == "set_size" || command == "push") && IsOneSpace(string)) {
+        return true;
     }
-
-    [[nodiscard]] auto IsOneSpace(const std::string& string) const noexcept -> bool {
-        size_t numberSpace = 0;
-        for (const auto& symbol : string) {
-            if (symbol == ' ') numberSpace++;
-            if (numberSpace > 1) return false;
-        }
+    if ((string == "print" || string == "pop") && IsZeroSpace(string)) {
         return true;
     }
 
-    [[nodiscard]] auto GetCommand(const std::string& string) const noexcept -> std::string {
-        return std::string(string.begin(), std::find(string.begin(), string.end(), ' '));
-    }
+    return false;
+}
 
-    [[nodiscard]] auto GetValue(const std::string& string) const noexcept -> std::string {
-        return std::string(std::next(std::find(string.begin(), string.end(), ' ')),
-                        string.end());
-    }
+auto IsContainsSetSize(const std::string& line) noexcept -> bool {
+    return line.find("set_size") != std::string::npos && IsValidCommand(line);
 
+}
 
-    [[nodiscard]] auto IsValidCommand(const std::string& string) const noexcept -> bool {
-        auto command = GetCommand(string);
-
-        if ((command == "set_size" || command == "push") && IsOneSpace(string)) {
-            return true;
+int main() {
+    std::string buffer;
+    bool isSetSizeFounded = false;
+    Stack* ptrStack = nullptr;
+    while (getline(std::cin, buffer, '\n')) {
+        if (buffer.empty()) continue;
+        else if (!IsContainsSetSize(buffer) && !isSetSizeFounded) {
+            std::cout << "error" << std::endl;
+            continue;
         }
-        if ((string == "print" || string == "pop") && IsZeroSpace(string)) {
-            return true;
+        else if (IsContainsSetSize(buffer) && !isSetSizeFounded) {
+            ptrStack = new Stack(std::stoi(GetValue(buffer)));
+            isSetSizeFounded = true;
         }
 
-        return false;
-    }
-
-public:
-    Receiver() {
-        std::string buffer;
-        while(std::getline(std::cin, buffer, '\n')) {
-            if (buffer.empty()) continue;
-            inputLines_.push_back(std::move(buffer));
-        }
-    }
-
-    void Output() const {
-        size_t numberStrSetSize = FindSetSize();
-        if (numberStrSetSize == -1) {
-            for (size_t i = 0; i < inputLines_.size(); i++) {
-                std::cout << "error" << std::endl;
+        else if (IsValidCommand(buffer) && isSetSizeFounded) {
+            std::string command = GetCommand(buffer);
+            if (command == "push") {
+                ptrStack->push(GetValue(buffer));
             }
-            return;
+            else if (command == "pop") {
+                ptrStack->pop();
+            }
+            else if (command == "print") {
+                ptrStack->print();
+            }
+            else
+                std::cout << "error" << std::endl;
         }
 
         else {
-            for (size_t i = 0; i < numberStrSetSize; ++i) {
-                std::cout << "error" << std::endl;
-            }
+            std::cout << "error" << std::endl;
         }
-        if (IsValidCommand(inputLines_[numberStrSetSize])) {
 
-            Stack stack(std::stoi(GetValue(inputLines_[numberStrSetSize])));
-            for (size_t i = numberStrSetSize + 1; i < inputLines_.size(); ++i) {
-                if (GetCommand(inputLines_[i]) == "push" && IsValidCommand(inputLines_[i])) {
-                    stack.push(GetValue(inputLines_[i]));
-                }
-                else if (GetCommand(inputLines_[i]) == "print" && IsValidCommand(inputLines_[i])) {
-                    stack.print();
-                }
-                else if (GetCommand(inputLines_[i]) == "pop" && IsValidCommand(inputLines_[i])) {
-                    stack.pop();
-                }
-                else {
-                    std::cout << "error" << std::endl;
-                }
-            }
-
-        }
     }
-};
 
+    delete ptrStack;
 
-int main() {
-    Receiver receiver;
-    receiver.Output();
     return 0;
 }
