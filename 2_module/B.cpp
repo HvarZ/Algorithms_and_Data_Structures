@@ -14,16 +14,46 @@ public:
          parent(nullptr), right(nullptr), left(nullptr) {}
 };
 
-#define ZIG(direction, reverseDirection)        \
-auto* tmp = node->direction;                    \
-node->parent = nullptr;                         \
-node->direction = parent;                       \
-parent->parent = node;                          \
-parent->reverseDirection = tmp;                 \
-if (tmp != nullptr) {                           \
-tmp->parent = parent;                           \
-}
+#define ZIG(direction, reverseDirection)            \
+    auto* tmp = node->direction;                    \
+    node->parent = nullptr;                         \
+    node->direction = parent;                       \
+    parent->parent = node;                          \
+    parent->reverseDirection = tmp;                 \
+    if (tmp != nullptr) {                           \
+        tmp->parent = parent;                       \
+    }
 
+
+#define ZIG_ZIG(direction, reverseDirection)        \
+    auto* tmp = node->direction;                    \
+    auto* tmp2 = parent->direction;                 \
+                                                    \
+    node->parent = grandparent->parent;             \
+    node->direction = parent;                       \
+                                                    \
+    parent->parent = node;                          \
+    parent->reverseDirection = tmp;                 \
+    parent->direction = grandparent;                \
+                                                    \
+    grandparent->parent = parent;                   \
+    grandparent->reverseDirection = tmp2;           \
+                                                    \
+    if (node->parent != nullptr) {                  \
+        if (node->parent->left == grandparent) {    \
+            node->parent->left = node;              \
+        } else {                                    \
+            node->parent->right = node;             \
+        }                                           \
+    }                                               \
+                                                    \
+    if (tmp != nullptr) {                           \
+        tmp->parent = parent;                       \
+    }                                               \
+                                                    \
+    if (tmp2 != nullptr) {                          \
+        tmp2->parent = grandparent;                 \
+    }
 
 
 template <typename K, typename T>
@@ -54,6 +84,22 @@ private:
         } else {
             ZIG(left, right)
         }
+    }
+
+    void ZigZig(Node<K, T>* node) noexcept {
+        auto *parent = node->parent;
+        auto *grandparent = parent->parent;
+
+        if (parent->left == node) {
+            ZIG_ZIG(right, left)
+        } else {
+            ZIG_ZIG(left, right)
+        }
+    }
+
+
+    void ZigZag(Node<K, T>* node) noexcept {
+
     }
 
 
