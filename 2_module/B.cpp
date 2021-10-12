@@ -2,32 +2,60 @@
 
 template <typename K, typename T>
 struct Node {
+public:
     K key;
     T value;
+    Node* parent;
     Node* right;
     Node* left;
+
+public:
+    explicit Node(const K& _key, const T& _value) noexcept : key(_key), value(_value),
+         parent(nullptr), right(nullptr), left(nullptr) {}
 };
+
+#define ZIG(direction, reverseDirection)        \
+auto* tmp = node->direction;                    \
+node->parent = nullptr;                         \
+node->direction = parent;                       \
+parent->parent = node;                          \
+parent->reverseDirection = tmp;                 \
+if (tmp != nullptr) {                           \
+tmp->parent = parent;                           \
+}
+
+
 
 template <typename K, typename T>
 class SplayTree {
 private:
-    void Clear(Node<K, T>* buffer) noexcept {
-        if (buffer != nullptr) {
-            if (buffer->left != nullptr || buffer->value != nullptr) {
-                if (buffer->left != nullptr && buffer->right == nullptr) {
-                    Clear(buffer->left);
-                    delete buffer;
-                } else if (buffer->left == nullptr && buffer->right != nullptr) {
-                    Clear(buffer->right);
-                    delete buffer;
-                } else {
-                    Clear(buffer->left);
-                }
+    void Clear(Node<K, T>* node) noexcept {
+        if (node == nullptr) return;
+        if (node->left == nullptr && node->right == nullptr) {
+            delete node;
+        } else {
+            if (node->left != nullptr && node->right == nullptr) {
+                Clear(node->left);
+                delete node;
+            } else if (node->left == nullptr && node->right != nullptr) {
+                Clear(node->right);
+                delete node;
             } else {
-                delete buffer;
+                Clear(node->left);
             }
         }
+
     }
+
+    void Zig(Node<K, T>* node) noexcept {
+        auto* parent = node->parent;
+        if (parent->left == node) {
+            ZIG(right, left)
+        } else {
+            ZIG(left, right)
+        }
+    }
+
 
 public:
     SplayTree() : root_(nullptr) {}
