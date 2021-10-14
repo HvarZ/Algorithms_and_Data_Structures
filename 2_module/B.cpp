@@ -55,6 +55,35 @@ public:
         tmp2->parent = grandparent;                 \
     }
 
+#define ZIG_ZAG(direction, reverseDirection)            \
+    auto* tmp = node->reverseDirection;                 \
+    auto* tmp2 = node->direction;                       \
+                                                        \
+    node->parent = grandparent->parent;                 \
+    node->reverseDirection = parent;                    \
+    node->direction = grandparent;                      \
+                                                        \
+    parent->parent = node;                              \
+    parent->right = tmp;                                \
+                                                        \
+    grandparent->parent = node;                         \
+    grandparent->left = tmp2;                           \
+                                                        \
+    if (node->parent != nullptr) {                      \
+        if (node->parent->left == grandparent) {        \
+            node->parent->left = node;                  \
+        } else {                                        \
+            node->parent->right = node;                 \
+        }                                               \
+    }                                                   \
+                                                        \
+    if (tmp != nullptr) {                               \
+        tmp->parent = parent;                           \
+    }                                                   \
+                                                        \
+    if (tmp2 != nullptr) {                              \
+        tmp2->parent = grandparent;                     \
+    }
 
 template <typename K, typename T>
 class SplayTree {
@@ -99,7 +128,31 @@ private:
 
 
     void ZigZag(Node<K, T>* node) noexcept {
+        auto* parent = node->parent;
+        auto* grandparent = parent->parent;
 
+        if (parent->right == node) {
+            ZIG_ZAG(right, left)
+        } else {
+            ZIG_ZAG(left, right)
+        }
+    }
+
+    void Splay(const Node<K, T>* node) noexcept {
+        while (node->parent != nullptr) {
+            auto* parent = node->parent;
+            auto* grandparent = parent->parent;
+            if (grandparent == nullptr) {
+                zig(node);
+            }
+            else if ((grandparent->left == parent && parent->left == node) ||
+                     (grandparent->right == parent && parent->right == node)) {
+                zig_zig(node);
+            }
+            else {
+                zig_zag(node);
+            }
+        }
     }
 
 
@@ -119,7 +172,6 @@ public:
     auto SearchNode(const K& key) const -> Node<K, T>;
     [[nodiscard]] auto GetMin() const -> Node<K, T>;
     [[nodiscard]] auto GetMax() const -> Node<K, T>;
-    void Splay(const K& key) noexcept;
     void Print() const noexcept;
 
 private:
@@ -128,6 +180,6 @@ private:
 
 
 int main() {
-
+    SplayTree<int64_t, std::string> tree;
     return EXIT_SUCCESS;
 }
