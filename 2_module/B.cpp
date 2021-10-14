@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdexcept>
+#include <utility>
 
 template <typename K, typename T>
 struct Node {
@@ -10,8 +12,22 @@ public:
     Node* left;
 
 public:
-    explicit Node(const K& _key, const T& _value) noexcept : key(_key), value(_value),
+    explicit Node(const K& _key, T  _value) noexcept : key(_key), value(std::move(_value)),
          parent(nullptr), right(nullptr), left(nullptr) {}
+
+    Node(const Node& _node) : key(_node.key), value(_node.value),
+         parent(_node.parent), right(_node.right), left(_node.left) {}
+
+    Node& operator=(const Node& _node) {
+        if (this == &_node) {
+           throw std::runtime_error("self - assignment error");
+        }
+        key = _node.key;
+        value = _node.value;
+        parent = _node.parent;
+        right = _node.right;
+        left = _node.left;
+    }
 };
 
 #define ZIG(direction, reverseDirection)            \
@@ -85,6 +101,13 @@ public:
         tmp2->parent = grandparent;                     \
     }
 
+#define ADD_NODE(direction)                             \
+    auto* new_node = new Node(node);                    \
+    current->direction = new_node;                      \
+    new_node->parent = current;                         \
+    Splay(new_node);                                    \
+    root_ = new_node;
+
 template <typename K, typename T>
 class SplayTree {
 private:
@@ -138,19 +161,19 @@ private:
         }
     }
 
-    void Splay(const Node<K, T>* node) noexcept {
+    void Splay(Node<K, T>* node) noexcept {
         while (node->parent != nullptr) {
             auto* parent = node->parent;
             auto* grandparent = parent->parent;
             if (grandparent == nullptr) {
-                zig(node);
+                Zig(node);
             }
             else if ((grandparent->left == parent && parent->left == node) ||
                      (grandparent->right == parent && parent->right == node)) {
-                zig_zig(node);
+                ZigZig(node);
             }
             else {
-                zig_zag(node);
+                ZigZag(node);
             }
         }
     }
@@ -163,13 +186,37 @@ public:
         Clear(root_);
     }
 
-    void AddNode(const K& key, const T& value) noexcept {
+    void AddNode(const Node<K, T>& node) noexcept {
+        if (root_ == nullptr) {
+            root_ = new Node(node.key, node.value);
+        }
+        auto* current = root_;
+        while (current != nullptr) {
+            if (node.key < current->key) {
+                if (current->left == nullptr) {
+                    ADD_NODE(left)
+                    return;
+                } else {
+                    current = current->left;
+                }
+            } else if (node.key > current->key) {
+                if (current->right == nullptr) {
+                    ADD_NODE(right)
+                    return;
+                } else {
+                    current = current->right;
+                }
+            } else {
+                Splay(current);
+                return;
+            }
+        }
 
     }
 
-    void SetNode(const K& key, const T& value) noexcept;
+    void SetNode(const Node<K, T>& node) noexcept;
     void DeleteNode(const K& key) noexcept;
-    auto SearchNode(const K& key) const -> Node<K, T>;
+    [[nodiscard]] auto SearchNode(const K& key) const -> Node<K, T>;
     [[nodiscard]] auto GetMin() const -> Node<K, T>;
     [[nodiscard]] auto GetMax() const -> Node<K, T>;
     void Print() const noexcept;
@@ -181,5 +228,10 @@ private:
 
 int main() {
     SplayTree<int64_t, std::string> tree;
+    tree.AddNode(Node<int64_t, std::string>(8, "10"));
+    tree.AddNode(Node<int64_t, std::string>(4, "14"));
+    tree.AddNode(Node<int64_t, std::string>(7, "15"));
+    tree.AddNode(Node<int64_t, std::string>(3, "13"));
+    tree.AddNode(Node<int64_t, std::string>(5, "16"));
     return EXIT_SUCCESS;
 }
