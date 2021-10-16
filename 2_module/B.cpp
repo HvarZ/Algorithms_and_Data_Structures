@@ -30,6 +30,7 @@ public:
     }
 };
 
+
 #define INFINITY while (true)
 
 #define ZIG(direction, reverseDirection)            \
@@ -189,6 +190,10 @@ public:
         Clear(root_);
     }
 
+    [[nodiscard]] auto IsEmpty() const noexcept -> bool {
+        return root_ == nullptr;
+    }
+
     void AddNode(const Node<K, T>& node) noexcept {
         if (root_ == nullptr) {
             root_ = new Node(node.key, node.value);
@@ -248,25 +253,56 @@ public:
         }
     }
 
-    [[nodiscard]] auto GetMin() -> Node<K, T>;
-    [[nodiscard]] auto GetMax() -> Node<K, T>;
-    void Print() const noexcept;
+    [[nodiscard]] auto GetMin() -> Node<K, T>& {
+        if (IsEmpty()) {
+            throw std::runtime_error("error");
+        }
+
+        auto* current = root_;
+
+        INFINITY {
+            if (current->left == nullptr) {
+                return *current;
+            } else {
+                current = current->left;
+            }
+        }
+    }
+
+    [[nodiscard]] auto GetMax() -> Node<K, T>& {
+        if (IsEmpty()) {
+            throw std::runtime_error("error");
+        }
+
+        auto* current = root_;
+
+        INFINITY {
+            if (current->right == nullptr) {
+                return *current;
+            } else {
+                current = current->right;
+            }
+        }
+    }
 
 private:
     Node<K, T>* root_;
 };
 
 
+template <typename K, typename T>
+void Print(const SplayTree<K, T>& tree) noexcept;
+
 int main() {
     SplayTree<int64_t, std::string> tree;
-    tree.AddNode(Node<int64_t, std::string>(1, "10"));
-    tree.AddNode(Node<int64_t, std::string>(2, "14"));
+    tree.AddNode(Node<int64_t, std::string>(215, "14"));
     tree.AddNode(Node<int64_t, std::string>(7, "15"));
     tree.AddNode(Node<int64_t, std::string>(4, "13"));
     tree.AddNode(Node<int64_t, std::string>(5, "16"));
-    tree.AddNode(Node<int64_t, std::string>(1, "16"));
+    tree.AddNode(Node<int64_t, std::string>(115, "16"));
 
-    std::cout << tree.SearchNode(7).value << std::endl;
+    std::cout << tree.GetMin().value << std::endl;
+    std::cout << tree.GetMax().value << std::endl;
 
     return EXIT_SUCCESS;
 }
