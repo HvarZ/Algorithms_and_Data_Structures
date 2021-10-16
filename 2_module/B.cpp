@@ -80,10 +80,10 @@ public:
     node->direction = grandparent;                      \
                                                         \
     parent->parent = node;                              \
-    parent->right = tmp;                                \
+    parent->direction = tmp;                            \
                                                         \
     grandparent->parent = node;                         \
-    grandparent->left = tmp2;                           \
+    grandparent->reverseDirection = tmp2;               \
                                                         \
     if (node->parent != nullptr) {                      \
         if (node->parent->left == grandparent) {        \
