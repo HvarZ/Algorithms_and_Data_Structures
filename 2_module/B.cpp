@@ -30,6 +30,8 @@ public:
     }
 };
 
+#define INFINITY while (true)
+
 #define ZIG(direction, reverseDirection)            \
     auto* tmp = node->direction;                    \
     node->parent = nullptr;                         \
@@ -176,6 +178,7 @@ private:
                 ZigZag(node);
             }
         }
+        root_ = node;
     }
 
 
@@ -189,9 +192,10 @@ public:
     void AddNode(const Node<K, T>& node) noexcept {
         if (root_ == nullptr) {
             root_ = new Node(node.key, node.value);
+            return;
         }
         auto* current = root_;
-        while (current != nullptr) {
+        INFINITY {
             if (node.key < current->key) {
                 if (current->left == nullptr) {
                     ADD_NODE(left)
@@ -216,9 +220,36 @@ public:
 
     void SetNode(const Node<K, T>& node) noexcept;
     void DeleteNode(const K& key) noexcept;
-    [[nodiscard]] auto SearchNode(const K& key) const -> Node<K, T>;
-    [[nodiscard]] auto GetMin() const -> Node<K, T>;
-    [[nodiscard]] auto GetMax() const -> Node<K, T>;
+
+    [[nodiscard]] auto SearchNode(const K& key) noexcept -> Node<K, T>& {
+        if (root_->key == key) {
+            return *root_;
+        }
+        auto* current = root_;
+        INFINITY {
+            if (key > current->key) {
+                if (current->right == nullptr) {
+                    Splay(current);
+                    return *current;
+                } else {
+                    current = current->right;
+                }
+            } else if (key < current->key) {
+                if (current->left == nullptr) {
+                    Splay(current);
+                    return *current;
+                } else {
+                    current = current->left;
+                }
+            } else {
+                Splay(current);
+                return *current;
+            }
+        }
+    }
+
+    [[nodiscard]] auto GetMin() -> Node<K, T>;
+    [[nodiscard]] auto GetMax() -> Node<K, T>;
     void Print() const noexcept;
 
 private:
@@ -228,10 +259,14 @@ private:
 
 int main() {
     SplayTree<int64_t, std::string> tree;
-    tree.AddNode(Node<int64_t, std::string>(8, "10"));
-    tree.AddNode(Node<int64_t, std::string>(4, "14"));
+    tree.AddNode(Node<int64_t, std::string>(1, "10"));
+    tree.AddNode(Node<int64_t, std::string>(2, "14"));
     tree.AddNode(Node<int64_t, std::string>(7, "15"));
-    tree.AddNode(Node<int64_t, std::string>(3, "13"));
+    tree.AddNode(Node<int64_t, std::string>(4, "13"));
     tree.AddNode(Node<int64_t, std::string>(5, "16"));
+    tree.AddNode(Node<int64_t, std::string>(1, "16"));
+
+    std::cout << tree.SearchNode(7).value << std::endl;
+
     return EXIT_SUCCESS;
 }
