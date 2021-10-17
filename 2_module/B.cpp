@@ -3,6 +3,7 @@
 #include <utility>
 #include <queue>
 #include <string>
+#include <algorithm>
 
 template <typename K, typename T>
 struct Node {
@@ -121,21 +122,12 @@ template <typename K, typename T>
 class SplayTree {
 private:
     void Clear(Node<K, T>* node) noexcept {
-        if (node == nullptr) return;
-        if (node->left == nullptr && node->right == nullptr) {
-            delete node;
-        } else {
-            if (node->left != nullptr && node->right == nullptr) {
-                Clear(node->left);
-                delete node;
-            } else if (node->left == nullptr && node->right != nullptr) {
-                Clear(node->right);
-                delete node;
-            } else {
-                Clear(node->left);
-            }
-        }
+        if (node != nullptr) {
+            Clear(node->left);
+            Clear(node->right);
 
+            delete node;
+        }
     }
 
     void Zig(Node<K, T>* node) noexcept {
@@ -200,9 +192,9 @@ public:
         return root_ == nullptr;
     }
 
-    void AddNode(const Node<K, T>& node) noexcept {
+    void AddNode(const Node<K, T>& node) {
         if (root_ == nullptr) {
-            root_ = new Node(node.key, node.value);
+            root_ = new Node<K, T>(node.key, node.value);
             return;
         }
         auto* current = root_;
@@ -223,7 +215,7 @@ public:
                 }
             } else {
                 Splay(current);
-                return;
+                throw std::runtime_error("error");
             }
         }
 
@@ -234,11 +226,17 @@ public:
             throw std::runtime_error("error");
         }
         auto target = SearchNode(node.key);
+        if (target == nullptr) {
+            throw std::runtime_error("error");
+        }
         target->value = node.value;
         Splay(target);
     }
 
     void DeleteNode(const K& key) {
+        if (IsEmpty()) {
+            throw std::runtime_error("error");
+        }
         auto* target = SearchNode(key);
         if (target == nullptr) {
             throw std::runtime_error("error");
@@ -271,7 +269,10 @@ public:
         delete target;
     }
 
-    [[nodiscard]] auto SearchNode(const K& key) noexcept -> Node<K, T>* {
+    [[nodiscard]] auto SearchNode(const K& key) -> Node<K, T>* {
+        if (IsEmpty()) {
+            throw std::runtime_error("error");
+        }
         if (root_->key == key) {
             return root_;
         }
@@ -307,6 +308,7 @@ public:
 
         INFINITY {
             if (current->left == nullptr) {
+                Splay(current);
                 return *current;
             } else {
                 current = current->left;
@@ -323,6 +325,7 @@ public:
 
         INFINITY {
             if (current->right == nullptr) {
+                Splay(current);
                 return *current;
             } else {
                 current = current->right;
@@ -374,17 +377,17 @@ void Print(const SplayTree<K, T>& tree) noexcept {
         ++elementCounter;
         if (elementCounter == numberElements) {
 
-            std::string null_line = "_";
+            std::string lineNull = "_";
             for (size_t j = 1; j < numberElements; ++j)
-                null_line += " _";
+                lineNull += " _";
 
-            if (line != null_line) {
+            if (line != lineNull) {
                 std::cout << line << '\n';
                 line.clear();
             } else {
                 break;
             }
-            numberElements *= 2;
+            numberElements <<= 1;
             elementCounter = 0;
         } else {
             line += " ";
@@ -392,21 +395,72 @@ void Print(const SplayTree<K, T>& tree) noexcept {
     }
 }
 
+
+template <typename K, typename T>
+void Handler(SplayTree<K, T>& tree) {
+    std::string buffer , command, value;
+    int64_t key;
+    while (std::cin >> command) {
+        if (command.empty()) {
+            continue;
+        } else if (command == "add") {
+            std::cin >> key >> value;
+            try {
+                tree.AddNode(Node(key, value));
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
+        } else if (command == "set") {
+            std::cin >> key >> value;
+            try {
+                tree.SetNode(Node(key, value));
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
+        } else if (command == "delete") {
+            std::cin >> key;
+            try {
+                tree.DeleteNode(key);
+            } catch (std::exception& e) {
+                std::cout << "error" << std::endl;
+            }
+        } else if (command == "search") {
+            std::cin >> key;
+            try {
+                auto target = tree.SearchNode(key);
+                if (target == nullptr) {
+                    std::cout << "0\n";
+                } else {
+                    std::cout << "1 " << target->value << std::endl;
+                }
+            } catch (std::runtime_error& e) {
+                std::cout << "0" << std::endl;
+            }
+        } else if (command == "min") {
+            try {
+                auto target = tree.GetMin();
+                std::cout << target.key << " " << target.value << std::endl;
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
+        } else if (command == "max") {
+            try {
+                auto target = tree.GetMax();
+                std::cout << target.key << " " << target.value << std::endl;
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
+        } else if (command == "print") {
+            Print(tree);
+        }
+    }
+}
+
+
 int main() {
     SplayTree<int64_t, std::string> tree;
-    tree.AddNode(Node<int64_t, std::string>(8, "10"));
-    tree.AddNode(Node<int64_t, std::string>(4, "14"));
-    tree.AddNode(Node<int64_t, std::string>(7, "15"));
-    tree.SetNode(Node<int64_t, std::string>(8, "11"));
-    tree.AddNode(Node<int64_t, std::string>(3, "13"));
-    tree.AddNode(Node<int64_t, std::string>(5, "16"));
-
-    auto tmp = tree.SearchNode(88);
-    tmp = tree.SearchNode(7);
-
-    tree.DeleteNode(5);
-
-    Print(tree);
+    Handler(tree);
 
     return EXIT_SUCCESS;
 }
+
