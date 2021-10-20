@@ -12,3 +12,4 @@ add_executable(1.C 1_module/C.cpp)
 add_executable(1.D 1_module/D.cpp)
 
 add_executable(2.B 2_module/B.cpp)
+add_executable(2.C 2_module/C.cpp)
