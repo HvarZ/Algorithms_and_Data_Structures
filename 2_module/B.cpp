@@ -15,7 +15,7 @@ public:
     Node* left;
 
 public:
-    explicit Node(const K& _key, T  _value) noexcept : key(_key), value(std::move(_value)),
+    explicit Node(const K& _key, const T&  _value) noexcept : key(_key), value(_value),
          parent(nullptr), right(nullptr), left(nullptr) {}
 
     Node(const Node& _node) : key(_node.key), value(_node.value),
@@ -30,6 +30,7 @@ public:
         parent = _node.parent;
         right = _node.right;
         left = _node.left;
+        return *this;
     }
 };
 
@@ -108,7 +109,7 @@ public:
     }
 
 #define ADD_NODE(direction)                             \
-    auto* new_node = new Node(node);                    \
+    auto* new_node = new Node<K, T>(key, value);        \
     current->direction = new_node;                      \
     new_node->parent = current;                         \
     Splay(new_node);                                    \
@@ -192,21 +193,21 @@ public:
         return root_ == nullptr;
     }
 
-    void AddNode(const Node<K, T>& node) {
+    void AddNode(const K& key, const T& value) {
         if (root_ == nullptr) {
-            root_ = new Node<K, T>(node.key, node.value);
+            root_ = new Node<K, T>(key, value);
             return;
         }
         auto* current = root_;
         INFINITY {
-            if (node.key < current->key) {
+            if (key < current->key) {
                 if (current->left == nullptr) {
                     ADD_NODE(left)
                     return;
                 } else {
                     current = current->left;
                 }
-            } else if (node.key > current->key) {
+            } else if (key > current->key) {
                 if (current->right == nullptr) {
                     ADD_NODE(right)
                     return;
@@ -221,15 +222,15 @@ public:
 
     }
 
-    void SetNode(const Node<K, T>& node) {
+    void SetNode(const K& key, const T& value) {
         if (IsEmpty()) {
             throw std::runtime_error("error");
         }
-        auto target = SearchNode(node.key);
+        auto target = SearchNode(key);
         if (target == nullptr) {
             throw std::runtime_error("error");
         }
-        target->value = node.value;
+        target->value = value;
         Splay(target);
     }
 
@@ -406,14 +407,14 @@ void Handler(SplayTree<K, T>& tree) {
         } else if (command == "add") {
             std::cin >> key >> value;
             try {
-                tree.AddNode(Node(key, value));
+                tree.AddNode(key, value);
             } catch (std::runtime_error& e) {
                 std::cout << "error" << std::endl;
             }
         } else if (command == "set") {
             std::cin >> key >> value;
             try {
-                tree.SetNode(Node(key, value));
+                tree.SetNode(key, value);
             } catch (std::runtime_error& e) {
                 std::cout << "error" << std::endl;
             }
