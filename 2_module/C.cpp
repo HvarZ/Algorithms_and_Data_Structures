@@ -30,29 +30,20 @@ private:                                                    // service functions
     }
 
 
-    void Heapify(const K& key) noexcept {
-        index_t index;
+    void HeapifyUp(const K& key) noexcept {
         index_t indexCurrent;
-        index_t indexLeftChild;
-        index_t indexRightChild;
+        index_t indexParent;
 
         while(true) {
-            indexCurrent = index = GetIndex(key);
-            indexLeftChild = GetIndexLeftChild(key);
-            indexRightChild = GetIndexRightChild(key);
-            if (indexLeftChild < GetSize() && tree_[indexLeftChild] < tree_[indexCurrent]) {
-                indexCurrent = indexLeftChild;
-            }
-            if (indexRightChild < GetSize() && tree_[indexRightChild] < tree_[indexCurrent]) {
-                indexCurrent = indexRightChild;
-            }
-            if (indexCurrent == index) {
+            indexCurrent = GetIndex(key);
+            indexParent = GetIndexParent(key);
+
+            if (tree_[indexCurrent].first < tree_[indexParent].first) {
+                std::swap(tree_[indexCurrent], tree_[indexParent]);
+                std::swap(mapIndex_[tree_[indexCurrent].first], mapIndex_[tree_[indexParent].first]);
+            } else {
                 break;
             }
-
-            std::swap(tree_[index], tree_[indexCurrent]);
-            std::swap(mapIndex_[tree_[index].first], mapIndex_[tree_[indexCurrent].first]);
-            index = indexCurrent;
         }
     }
 
@@ -67,7 +58,7 @@ public:                                                     // interaction inter
         } else {
             tree_.push_back(node);
             mapIndex_[node.first] = tree_.size() - 1;
-            Heapify(tree_[GetIndexParent(node.first)].first);
+            HeapifyUp(node.first);
         }
     }
 
@@ -97,13 +88,14 @@ private:
 
 int main() {
     MinBinaryHeap<int64_t, std::string> heap;
-    heap.Add(std::pair<int64_t, std::string>(1, "12"));
+    heap.Add(std::pair<int64_t, std::string>(2, "12"));
     heap.Add(std::pair<int64_t, std::string>(3, "13"));
-    heap.Add(std::pair<int64_t, std::string>(5, "14"));
-    heap.Add(std::pair<int64_t, std::string>(4, "15"));
+    heap.Add(std::pair<int64_t, std::string>(4, "14"));
+    heap.Add(std::pair<int64_t, std::string>(5, "15"));
     heap.Add(std::pair<int64_t, std::string>(6, "16"));
     heap.Add(std::pair<int64_t, std::string>(7, "17"));
-    heap.Add(std::pair<int64_t, std::string>(2, "18"));
+    heap.Add(std::pair<int64_t, std::string>(8, "18"));
+    heap.Add(std::pair<int64_t, std::string>(1, "11"));
 
     return EXIT_SUCCESS;
 }
