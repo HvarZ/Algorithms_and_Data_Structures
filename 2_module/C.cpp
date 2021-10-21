@@ -3,6 +3,7 @@
 #include <utility>
 #include <tuple>
 #include <string>
+#include <iostream>
 
 
 using index_t = size_t;                                     // alias for type of indexation
@@ -51,7 +52,7 @@ public:                                                     // interaction inter
     MinBinaryHeap() = default;
     void Add(const keyValue_t& node) noexcept {
         if (IsEmpty()) {
-            tree_.push_back(keyValue_t(0, "infinity"));
+            tree_.push_back(keyValue_t(K(), V()));
             tree_.push_back(node);
             mapIndex_[node.first] = tree_.size() - 1;
             return;
@@ -77,6 +78,10 @@ public:                                                     // interaction inter
         return tree_.empty();
     }
 
+    [[nodiscard]] auto GetTree() const noexcept -> const std::vector<keyValue_t>* {
+        return &tree_;
+    }
+
 
     auto Extract() noexcept -> keyValue_t;
 
@@ -84,6 +89,38 @@ private:
     std::unordered_map<K, index_t> mapIndex_;
     std::vector<keyValue_t> tree_;
 };
+
+template <typename K, typename V>
+void Print(const MinBinaryHeap<K, V> heap) {
+    if (heap.IsEmpty()) {
+        std::cout << "_" << std::endl;
+        return;
+    }
+
+    std::cout << "[" << std::get<0>(heap.GetTree()->operator[](1))
+              << " " << std::get<1>(heap.GetTree()->operator[](1)) << "]" << " " << std::endl;
+
+    size_t levelSize = 2;
+    size_t counterElementLevel = 0;
+
+    for (size_t i = 2; i < heap.GetSize(); ++i) {
+        std::cout << "[" << std::get<0>(heap.GetTree()->operator[](i)) << " "
+                         << std::get<1>(heap.GetTree()->operator[](i)) << " "
+                         << std::get<0>(heap.GetTree()->operator[](i / 2)) << "]" << " ";
+
+        counterElementLevel++;
+        if (counterElementLevel == levelSize) {
+            levelSize <<= 1;
+            std::cout << std::endl;
+            counterElementLevel = 0;
+        }
+        if (i + 1 == heap.GetSize()) {
+            for (size_t j = 0; j < levelSize - counterElementLevel; ++j) {
+                std::cout << "_" << " ";
+            }
+        }
+    }
+}
 
 
 int main() {
@@ -96,6 +133,8 @@ int main() {
     heap.Add(std::pair<int64_t, std::string>(7, "17"));
     heap.Add(std::pair<int64_t, std::string>(8, "18"));
     heap.Add(std::pair<int64_t, std::string>(1, "11"));
+
+    Print(heap);
 
     return EXIT_SUCCESS;
 }
