@@ -12,8 +12,20 @@ private:                                                    // some useful alias
     using keyValue_t = std::pair<K, V>;
 
 private:                                                    // service functions
-    void UpHeapify(const K& key) noexcept;
-    void DownHeapify(const K& key) noexcept;
+    [[nodiscard]] auto GetIndexLeftChild(const K& key) const noexcept -> index_t {
+        return 2 * mapIndex_.at(key);
+    }
+    [[nodiscard]] auto GetIndexRightChild(const K& key) const noexcept -> index_t {
+        return 2 * mapIndex_.at(key);
+    }
+
+    [[nodiscard]] auto GetIndex(const K& key) const noexcept -> index_t {
+        return mapIndex_.at(key);
+    }
+
+
+    void downHeapify(const K& key) noexcept;
+    void upHeapify(const K& key) noexcept;
 
 public:                                                     // interaction interface
     MinBinaryHeap() = default;
@@ -24,6 +36,11 @@ public:                                                     // interaction inter
 
     [[nodiscard]] auto GetMin() const noexcept -> keyIndexValue_t;
     [[nodiscard]] auto GetMax() const noexcept -> keyIndexValue_t;
+
+    [[nodiscard]] auto GetSize() const noexcept -> size_t {
+        return tree_.size();
+    }
+
 
     auto Extract() noexcept -> keyValue_t;
 
