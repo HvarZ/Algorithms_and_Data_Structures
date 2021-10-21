@@ -4,6 +4,7 @@
 #include <tuple>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 
 using index_t = size_t;                                     // alias for type of indexation
@@ -50,32 +51,57 @@ private:                                                    // service functions
 
 public:                                                     // interaction interface
     MinBinaryHeap() = default;
-    void Add(const keyValue_t& node) noexcept {
+    void Add(const K& key, const V& value) noexcept {
         if (IsEmpty()) {
             tree_.push_back(keyValue_t(K(), V()));
-            tree_.push_back(node);
-            mapIndex_[node.first] = tree_.size() - 1;
+            tree_.push_back(keyValue_t(key, value));
+            mapIndex_[key] = tree_.size() - 1;
             return;
         } else {
-            tree_.push_back(node);
-            mapIndex_[node.first] = tree_.size() - 1;
-            HeapifyUp(node.first);
+            tree_.push_back(keyValue_t(key, value));
+            mapIndex_[key] = tree_.size() - 1;
+            HeapifyUp(key);
         }
     }
 
-    void Set(const keyValue_t& node) noexcept;
-    void Delete(const K& key) noexcept;
-    auto Search(const K& key) const noexcept -> keyValue_t;
+    void Set(const K& key, const V& value) noexcept {
+        tree_[mapIndex_[key]].second = value;
+    }
 
-    [[nodiscard]] auto GetMin() const noexcept -> keyIndexValue_t;
-    [[nodiscard]] auto GetMax() const noexcept -> keyIndexValue_t;
+    void Delete(const K& key) noexcept;
+
+    [[nodiscard]] auto Search(const K& key) const -> std::tuple<index_t, V> {
+        if (IsEmpty() || mapIndex_.count(key) == 0) {
+            throw std::runtime_error("error");
+        }
+        return std::make_tuple(mapIndex_.at(key), tree_[mapIndex_.at(key)].second);
+    }
+
+    [[nodiscard]] auto GetMin() const noexcept -> keyIndexValue_t {
+        return std::make_tuple(tree_[1].first, 1, tree_[1].second);
+    }
+
+    [[nodiscard]] auto GetMax() const noexcept -> keyIndexValue_t {
+        K maxKey = tree_[1].first;
+        index_t index;
+        for (size_t i = 1; i < GetSize(); ++i) {
+            if (GetIndexLeftChild(tree_[i].first) >= GetSize() &&
+                GetIndexRightChild(tree_[i].first) >= GetSize()) {
+                if (tree_[i].first > maxKey) {
+                    maxKey = tree_[i].first;
+                    index = i;
+                }
+            }
+        }
+        return std::make_tuple(maxKey, index, tree_[mapIndex_.at(maxKey)].second);
+    }
 
     [[nodiscard]] auto GetSize() const noexcept -> size_t {
         return tree_.size();
     }
 
     [[nodiscard]] auto IsEmpty() const noexcept -> bool {
-        return tree_.empty();
+        return tree_.empty() || tree_.size() == 1;
     }
 
     [[nodiscard]] auto GetTree() const noexcept -> const std::vector<keyValue_t>* {
@@ -118,6 +144,53 @@ void Print(const MinBinaryHeap<K, V> heap) {
             for (size_t j = 0; j < levelSize - counterElementLevel; ++j) {
                 std::cout << "_" << " ";
             }
+            std::cout << std::endl;
+        }
+    }
+}
+
+template <typename K, typename V>
+void Handler(MinBinaryHeap<K, V>& heap) noexcept {
+    std::string command, value;
+    int64_t key;
+
+
+    while (std::cin >> command) {
+        if (command.empty()) {
+            continue;
+        } else if (command == "add") {
+            std::cin >> key >> value;
+            heap.Add(key, value);
+        } else if (command == "set") {
+            std::cin >> key >> value;
+            heap.Set(key, value);
+        } else if (command == "delete") {
+            std::cin >> key;
+        } else if (command == "search") {
+            try {
+                std::cin >> key;
+                auto tuple = heap.Search(key);
+                std::cout << "1 " << std::get<0>(tuple) << " "
+                                  << std::get<1>(tuple) << std::endl;
+            } catch (std::runtime_error& e) {
+                std::cout << "0" << std::endl;
+            }
+        } else if (command == "min") {
+            auto tuple = heap.GetMin();
+            std::cout << std::get<0>(tuple) << " "
+                      << std::get<1>(tuple) << " "
+                      << std::get<2>(tuple) << std::endl;
+        } else if (command == "max") {
+            auto tuple = heap.GetMax();
+            std::cout << std::get<0>(tuple) << " "
+                      << std::get<1>(tuple) << " "
+                      << std::get<2>(tuple) << std::endl;
+        } else if (command == "extract") {
+
+        } else if (command == "print") {
+            Print(heap);
+        } else {
+            std::cout << "error" << std::endl;
         }
     }
 }
@@ -125,16 +198,7 @@ void Print(const MinBinaryHeap<K, V> heap) {
 
 int main() {
     MinBinaryHeap<int64_t, std::string> heap;
-    heap.Add(std::pair<int64_t, std::string>(2, "12"));
-    heap.Add(std::pair<int64_t, std::string>(3, "13"));
-    heap.Add(std::pair<int64_t, std::string>(4, "14"));
-    heap.Add(std::pair<int64_t, std::string>(5, "15"));
-    heap.Add(std::pair<int64_t, std::string>(6, "16"));
-    heap.Add(std::pair<int64_t, std::string>(7, "17"));
-    heap.Add(std::pair<int64_t, std::string>(8, "18"));
-    heap.Add(std::pair<int64_t, std::string>(1, "11"));
-
-    Print(heap);
+    Handler(heap);
 
     return EXIT_SUCCESS;
 }
