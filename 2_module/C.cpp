@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
-
+#include <algorithm>
 
 using index_t = size_t;                                     // alias for type of indexation
 
@@ -27,8 +27,12 @@ private:                                                    // service functions
         return mapIndex_.at(key);
     }
 
-    [[nodiscard]] auto GetIndexParent(const K& key) const noexcept ->index_t {
+    [[nodiscard]] auto GetIndexParent(const K& key) const noexcept -> index_t {
         return mapIndex_.at(key) / 2;
+    }
+
+    [[nodiscard]] auto GetIndexLastNode() const noexcept -> index_t {
+        return GetSize() - 1;
     }
 
 
@@ -39,17 +43,58 @@ private:                                                    // service functions
         while(true) {
             indexCurrent = GetIndex(key);
             indexParent = GetIndexParent(key);
+            if (indexParent <= 0) {
+                return;
+            }
 
             if (tree_[indexCurrent].first < tree_[indexParent].first) {
                 std::swap(tree_[indexCurrent], tree_[indexParent]);
-                std::swap(mapIndex_[tree_[indexCurrent].first], mapIndex_[tree_[indexParent].first]);
+                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(tree_[indexParent].first));
+            } else {
+                return;
+            }
+        }
+    }
+
+    void HeapifyDown(const K& key) noexcept {
+        index_t indexCurrent;
+        index_t indexLeftChild;
+        index_t indexRightChild;
+        K minKeyChild;
+        index_t indexMinKey;
+        const K keyCurrent = key;
+
+        while(true) {
+            indexCurrent = GetIndex(keyCurrent);
+            indexLeftChild = GetIndexLeftChild(keyCurrent);
+            indexRightChild = GetIndexRightChild(keyCurrent);
+
+
+            if ((tree_[indexCurrent].first > tree_[indexLeftChild].first && indexLeftChild < GetSize()) &&
+                (tree_[indexCurrent].first > tree_[indexRightChild].first && indexRightChild < GetSize())) {
+                minKeyChild = std::min(tree_[indexLeftChild].first, tree_[indexRightChild].first);
+                indexMinKey = mapIndex_.at(minKeyChild);
+                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
+                std::swap(tree_[indexCurrent], tree_[indexMinKey]);
+            } else if ((tree_[indexCurrent].first > tree_[indexLeftChild].first && indexLeftChild < GetSize()) &&
+                       (tree_[indexCurrent].first > tree_[indexRightChild].first && indexRightChild >= GetSize())) {
+                minKeyChild = tree_[indexLeftChild].first;
+                indexMinKey = mapIndex_.at(minKeyChild);
+                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
+                std::swap(tree_[indexCurrent], tree_[indexMinKey]);
             } else {
                 break;
             }
         }
     }
 
-public:                                                     // interaction interface
+    void Heapify(const K& key) noexcept {
+        HeapifyUp(key);
+        HeapifyDown(key);
+    }
+
+
+    public:                                                     // interaction interface
     MinBinaryHeap() = default;
     void Add(const K& key, const V& value) noexcept {
         if (IsEmpty()) {
@@ -60,7 +105,7 @@ public:                                                     // interaction inter
         } else {
             tree_.push_back(keyValue_t(key, value));
             mapIndex_[key] = tree_.size() - 1;
-            HeapifyUp(key);
+            Heapify(key);
         }
     }
 
@@ -68,13 +113,27 @@ public:                                                     // interaction inter
         tree_[mapIndex_[key]].second = value;
     }
 
-    void Delete(const K& key) noexcept;
+    void Delete(const K& key) noexcept {
+        auto target = Search(key);
+        index_t newIndexLast = mapIndex_.at(key);
 
-    [[nodiscard]] auto Search(const K& key) const -> std::tuple<index_t, V> {
+        std::swap(mapIndex_.at(key), mapIndex_.at(tree_[GetIndexLastNode()].first));
+        mapIndex_.erase(key);
+
+        std::swap(tree_[target.first], tree_[GetIndexLastNode()]);
+        tree_.pop_back();
+
+        Heapify(tree_[newIndexLast].first);
+    }
+
+    [[nodiscard]] auto Search(const K& key) const -> std::pair<index_t, V> {
         if (IsEmpty() || mapIndex_.count(key) == 0) {
             throw std::runtime_error("error");
         }
-        return std::make_tuple(mapIndex_.at(key), tree_[mapIndex_.at(key)].second);
+        if (mapIndex_.count(key) == 0) {
+            throw std::runtime_error("not found");
+        }
+        return std::make_pair(mapIndex_.at(key), tree_[mapIndex_.at(key)].second);
     }
 
     [[nodiscard]] auto GetMin() const noexcept -> keyIndexValue_t {
@@ -109,7 +168,11 @@ public:                                                     // interaction inter
     }
 
 
-    auto Extract() noexcept -> keyValue_t;
+    auto Extract() noexcept -> keyValue_t {
+        auto tmp = tree_[1];
+        Delete(tree_[1].first);
+        return tmp;
+    }
 
 private:
     std::unordered_map<K, index_t> mapIndex_;
@@ -135,16 +198,17 @@ void Print(const MinBinaryHeap<K, V> heap) {
                          << std::get<0>(heap.GetTree()->operator[](i / 2)) << "]" << " ";
 
         counterElementLevel++;
-        if (counterElementLevel == levelSize) {
-            levelSize <<= 1;
-            std::cout << std::endl;
-            counterElementLevel = 0;
-        }
         if (i + 1 == heap.GetSize()) {
             for (size_t j = 0; j < levelSize - counterElementLevel; ++j) {
                 std::cout << "_" << " ";
             }
             std::cout << std::endl;
+            break;
+        }
+        if (counterElementLevel == levelSize) {
+            levelSize <<= 1;
+            std::cout << std::endl;
+            counterElementLevel = 0;
         }
     }
 }
@@ -166,6 +230,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
             heap.Set(key, value);
         } else if (command == "delete") {
             std::cin >> key;
+            heap.Delete(key);
         } else if (command == "search") {
             try {
                 std::cin >> key;
@@ -186,7 +251,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
                       << std::get<1>(tuple) << " "
                       << std::get<2>(tuple) << std::endl;
         } else if (command == "extract") {
-
+            heap.Extract();
         } else if (command == "print") {
             Print(heap);
         } else {
@@ -202,4 +267,3 @@ int main() {
 
     return EXIT_SUCCESS;
 }
-
