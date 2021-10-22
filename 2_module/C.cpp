@@ -235,7 +235,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
             try {
                 std::cin >> key;
                 auto tuple = heap.Search(key);
-                std::cout << "1 " << std::get<0>(tuple) << " "
+                std::cout << "1 " << std::get<0>(tuple) - 1 << " "
                                   << std::get<1>(tuple) << std::endl;
             } catch (std::runtime_error& e) {
                 std::cout << "0" << std::endl;
@@ -251,7 +251,8 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
                       << std::get<1>(tuple) << " "
                       << std::get<2>(tuple) << std::endl;
         } else if (command == "extract") {
-            heap.Extract();
+            auto pairKeyValue = heap.Extract();
+            std::cout << pairKeyValue.first << " " << pairKeyValue.second << std::endl;
         } else if (command == "print") {
             Print(heap);
         } else {
