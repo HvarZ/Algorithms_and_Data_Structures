@@ -96,24 +96,28 @@ private:                                                    // service functions
 
     public:                                                     // interaction interface
     MinBinaryHeap() = default;
-    void Add(const K& key, const V& value) noexcept {
+    void Add(const K& key, const V& value) {
         if (IsEmpty()) {
             tree_.push_back(keyValue_t(K(), V()));
             tree_.push_back(keyValue_t(key, value));
             mapIndex_[key] = tree_.size() - 1;
             return;
         } else {
+            if (mapIndex_.count(key) != 0) {
+                throw std::runtime_error("error");
+            }
             tree_.push_back(keyValue_t(key, value));
             mapIndex_[key] = tree_.size() - 1;
             Heapify(key);
         }
     }
 
-    void Set(const K& key, const V& value) noexcept {
-        tree_[mapIndex_[key]].second = value;
+    void Set(const K& key, const V& value) {
+        auto target = Search(key);
+        tree_[target.first].second = value;
     }
 
-    void Delete(const K& key) noexcept {
+    void Delete(const K& key) {
         auto target = Search(key);
         index_t newIndexLast = mapIndex_.at(key);
 
@@ -123,7 +127,10 @@ private:                                                    // service functions
         std::swap(tree_[target.first], tree_[GetIndexLastNode()]);
         tree_.pop_back();
 
-        Heapify(tree_[newIndexLast].first);
+
+        if (newIndexLast != GetSize()) {
+            Heapify(tree_[newIndexLast].first);
+        }
     }
 
     [[nodiscard]] auto Search(const K& key) const -> std::pair<index_t, V> {
@@ -136,11 +143,17 @@ private:                                                    // service functions
         return std::make_pair(mapIndex_.at(key), tree_[mapIndex_.at(key)].second);
     }
 
-    [[nodiscard]] auto GetMin() const noexcept -> keyIndexValue_t {
+    [[nodiscard]] auto GetMin() const -> keyIndexValue_t {
+        if (GetSize() == 0) {
+            throw std::runtime_error("error");
+        }
         return std::make_tuple(tree_[1].first, 1, tree_[1].second);
     }
 
-    [[nodiscard]] auto GetMax() const noexcept -> keyIndexValue_t {
+    [[nodiscard]] auto GetMax() const -> keyIndexValue_t {
+        if (GetSize() == 0) {
+            throw std::runtime_error("error");
+        }
         K maxKey = tree_[1].first;
         index_t index;
         for (size_t i = 1; i < GetSize(); ++i) {
@@ -168,7 +181,10 @@ private:                                                    // service functions
     }
 
 
-    auto Extract() noexcept -> keyValue_t {
+    auto Extract() -> keyValue_t {
+        if (IsEmpty()) {
+            throw std::runtime_error("error");
+        }
         auto tmp = tree_[1];
         Delete(tree_[1].first);
         return tmp;
@@ -223,14 +239,26 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
         if (command.empty()) {
             continue;
         } else if (command == "add") {
-            std::cin >> key >> value;
-            heap.Add(key, value);
+            try {
+                std::cin >> key >> value;
+                heap.Add(key, value);
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
         } else if (command == "set") {
-            std::cin >> key >> value;
-            heap.Set(key, value);
+            try {
+                std::cin >> key >> value;
+                heap.Set(key, value);
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
         } else if (command == "delete") {
-            std::cin >> key;
-            heap.Delete(key);
+            try {
+                std::cin >> key;
+                heap.Delete(key);
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
         } else if (command == "search") {
             try {
                 std::cin >> key;
@@ -241,18 +269,30 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
                 std::cout << "0" << std::endl;
             }
         } else if (command == "min") {
-            auto tuple = heap.GetMin();
-            std::cout << std::get<0>(tuple) << " "
-                      << std::get<1>(tuple) << " "
-                      << std::get<2>(tuple) << std::endl;
+            try {
+                auto tuple = heap.GetMin();
+                std::cout << std::get<0>(tuple) << " "
+                          << std::get<1>(tuple) - 1 << " "
+                          << std::get<2>(tuple) << std::endl;
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
         } else if (command == "max") {
-            auto tuple = heap.GetMax();
-            std::cout << std::get<0>(tuple) << " "
-                      << std::get<1>(tuple) << " "
-                      << std::get<2>(tuple) << std::endl;
+            try {
+                auto tuple = heap.GetMax();
+                std::cout << std::get<0>(tuple) << " "
+                          << std::get<1>(tuple) - 1 << " "
+                          << std::get<2>(tuple) << std::endl;
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
         } else if (command == "extract") {
-            auto pairKeyValue = heap.Extract();
-            std::cout << pairKeyValue.first << " " << pairKeyValue.second << std::endl;
+            try {
+                auto pairKeyValue = heap.Extract();
+                std::cout << pairKeyValue.first << " " << pairKeyValue.second << std::endl;
+            } catch (std::runtime_error& e) {
+                std::cout << "error" << std::endl;
+            }
         } else if (command == "print") {
             Print(heap);
         } else {
@@ -268,3 +308,5 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+
