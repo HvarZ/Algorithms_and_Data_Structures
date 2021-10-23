@@ -17,10 +17,10 @@ public:                                                     // some useful alias
 
 private:                                                    // service functions
     [[nodiscard]] auto GetIndexLeftChild(const K& key) const noexcept -> index_t {
-        return 2 * mapIndex_.at(key);
+        return 2 * mapIndex_.at(key) + 1;
     }
     [[nodiscard]] auto GetIndexRightChild(const K& key) const noexcept -> index_t {
-        return 2 * mapIndex_.at(key) + 1;
+        return 2 * mapIndex_.at(key) + 2;
     }
 
     [[nodiscard]] auto GetIndex(const K& key) const noexcept -> index_t {
@@ -28,7 +28,7 @@ private:                                                    // service functions
     }
 
     [[nodiscard]] auto GetIndexParent(const K& key) const noexcept -> index_t {
-        return mapIndex_.at(key) / 2;
+        return (mapIndex_.at(key) - 1) / 2;
     }
 
     [[nodiscard]] auto GetIndexLastNode() const noexcept -> index_t {
@@ -43,13 +43,13 @@ private:                                                    // service functions
         while(true) {
             indexCurrent = GetIndex(key);
             indexParent = GetIndexParent(key);
-            if (indexParent <= 0) {
+            if (mapIndex_.at(key) == 0) {
                 return;
             }
 
             if (tree_[indexCurrent].first < tree_[indexParent].first) {
-                std::swap(tree_[indexCurrent], tree_[indexParent]);
                 std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(tree_[indexParent].first));
+                std::swap(tree_[indexCurrent], tree_[indexParent]);
             } else {
                 return;
             }
@@ -83,7 +83,7 @@ private:                                                    // service functions
                 std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
                 std::swap(tree_[indexCurrent], tree_[indexMinKey]);
             } else {
-                break;
+                return;
             }
         }
     }
@@ -97,19 +97,12 @@ private:                                                    // service functions
     public:                                                     // interaction interface
     MinBinaryHeap() = default;
     void Add(const K& key, const V& value) {
-        if (IsEmpty()) {
-            tree_.push_back(keyValue_t(K(), V()));
-            tree_.push_back(keyValue_t(key, value));
-            mapIndex_[key] = tree_.size() - 1;
-            return;
-        } else {
-            if (mapIndex_.count(key) != 0) {
-                throw std::runtime_error("error");
-            }
-            tree_.push_back(keyValue_t(key, value));
-            mapIndex_[key] = tree_.size() - 1;
-            Heapify(key);
+        if (mapIndex_.count(key) != 0) {
+            throw std::runtime_error("error");
         }
+        tree_.push_back(keyValue_t(key, value));
+        mapIndex_[key] = tree_.size() - 1;
+        Heapify(key);
     }
 
     void Set(const K& key, const V& value) {
@@ -137,9 +130,6 @@ private:                                                    // service functions
         if (IsEmpty() || mapIndex_.count(key) == 0) {
             throw std::runtime_error("error");
         }
-        if (mapIndex_.count(key) == 0) {
-            throw std::runtime_error("not found");
-        }
         return std::make_pair(mapIndex_.at(key), tree_[mapIndex_.at(key)].second);
     }
 
@@ -147,14 +137,14 @@ private:                                                    // service functions
         if (GetSize() == 0) {
             throw std::runtime_error("error");
         }
-        return std::make_tuple(tree_[1].first, 1, tree_[1].second);
+        return std::make_tuple(tree_[0].first, 0, tree_[0].second);
     }
 
     [[nodiscard]] auto GetMax() const -> keyIndexValue_t {
         if (GetSize() == 0) {
             throw std::runtime_error("error");
         }
-        K maxKey = tree_[1].first;
+        K maxKey = tree_[0].first;
         index_t index;
         for (size_t i = 1; i < GetSize(); ++i) {
             if (GetIndexLeftChild(tree_[i].first) >= GetSize() &&
@@ -173,7 +163,7 @@ private:                                                    // service functions
     }
 
     [[nodiscard]] auto IsEmpty() const noexcept -> bool {
-        return tree_.empty() || tree_.size() == 1;
+        return tree_.empty();
     }
 
     [[nodiscard]] auto GetTree() const noexcept -> const std::vector<keyValue_t>* {
@@ -185,8 +175,8 @@ private:                                                    // service functions
         if (IsEmpty()) {
             throw std::runtime_error("error");
         }
-        auto tmp = tree_[1];
-        Delete(tree_[1].first);
+        auto tmp = tree_[0];
+        Delete(tree_[0].first);
         return tmp;
     }
 
@@ -202,16 +192,16 @@ void Print(const MinBinaryHeap<K, V> heap) {
         return;
     }
 
-    std::cout << "[" << std::get<0>(heap.GetTree()->operator[](1))
-              << " " << std::get<1>(heap.GetTree()->operator[](1)) << "]" << " " << std::endl;
+    std::cout << "[" << std::get<0>(heap.GetTree()->operator[](0))
+              << " " << std::get<1>(heap.GetTree()->operator[](0)) << "]" << " " << std::endl;
 
     size_t levelSize = 2;
     size_t counterElementLevel = 0;
 
-    for (size_t i = 2; i < heap.GetSize(); ++i) {
+    for (size_t i = 1; i < heap.GetSize(); ++i) {
         std::cout << "[" << std::get<0>(heap.GetTree()->operator[](i)) << " "
                          << std::get<1>(heap.GetTree()->operator[](i)) << " "
-                         << std::get<0>(heap.GetTree()->operator[](i / 2)) << "]" << " ";
+                         << std::get<0>(heap.GetTree()->operator[]((i - 1) / 2)) << "]" << " ";
 
         counterElementLevel++;
         if (i + 1 == heap.GetSize()) {
@@ -263,7 +253,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
             try {
                 std::cin >> key;
                 auto tuple = heap.Search(key);
-                std::cout << "1 " << std::get<0>(tuple) - 1 << " "
+                std::cout << "1 " << std::get<0>(tuple) << " "
                                   << std::get<1>(tuple) << std::endl;
             } catch (std::runtime_error& e) {
                 std::cout << "0" << std::endl;
@@ -272,7 +262,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
             try {
                 auto tuple = heap.GetMin();
                 std::cout << std::get<0>(tuple) << " "
-                          << std::get<1>(tuple) - 1 << " "
+                          << std::get<1>(tuple) << " "
                           << std::get<2>(tuple) << std::endl;
             } catch (std::runtime_error& e) {
                 std::cout << "error" << std::endl;
@@ -281,7 +271,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
             try {
                 auto tuple = heap.GetMax();
                 std::cout << std::get<0>(tuple) << " "
-                          << std::get<1>(tuple) - 1 << " "
+                          << std::get<1>(tuple) << " "
                           << std::get<2>(tuple) << std::endl;
             } catch (std::runtime_error& e) {
                 std::cout << "error" << std::endl;
@@ -304,7 +294,7 @@ void Handler(MinBinaryHeap<K, V>& heap) noexcept {
 
 int main() {
     MinBinaryHeap<int64_t, std::string> heap;
-    Handler(heap);
+    Handler<int64_t, std::string>(heap);
 
     return EXIT_SUCCESS;
 }
