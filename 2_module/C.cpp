@@ -23,86 +23,66 @@ private:                                                    // service functions
         return 2 * mapIndex_.at(key) + 2;
     }
 
-    [[nodiscard]] auto GetIndex(const K& key) const noexcept -> index_t {
-        return mapIndex_.at(key);
-    }
-
-    [[nodiscard]] auto GetIndexParent(const K& key) const noexcept -> index_t {
-        return (mapIndex_.at(key) - 1) / 2;
-    }
-
     [[nodiscard]] auto GetIndexLastNode() const noexcept -> index_t {
         return GetSize() - 1;
     }
 
 
-    void HeapifyUp(const K& key) noexcept {
-        index_t indexCurrent;
-        index_t indexParent;
+    void HeapifyUp(const index_t index) noexcept {
+        index_t indexCurrent = index;
+        index_t indexParent = (index - 1) / 2;
+
+        while(indexCurrent != 0 && tree_[indexCurrent].first < tree_[indexParent].first) {
+            mapIndex_[tree_[indexParent].first] = indexCurrent;
+            mapIndex_[tree_[indexCurrent].first] = indexParent;
+            std::swap(tree_[indexCurrent], tree_[indexParent]);
+            indexCurrent = indexParent;
+            indexParent = (indexCurrent - 1) / 2;
+        }
+    }
+
+    void HeapifyDown(const index_t index) noexcept {
+        index_t indexCurrent = index;
+        index_t indexLeftChild = (2 * index) + 1;
+        index_t indexRightChild = (2 * index) + 2;
+
 
         while(true) {
-            indexCurrent = GetIndex(key);
-            indexParent = GetIndexParent(key);
-            if (mapIndex_.at(key) == 0) {
-                return;
-            }
-
-            if (tree_[indexCurrent].first < tree_[indexParent].first) {
-                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(tree_[indexParent].first));
-                std::swap(tree_[indexCurrent], tree_[indexParent]);
+            if ((indexLeftChild < GetSize() - 1  && tree_[indexCurrent].first > tree_[indexLeftChild].first) ||
+                (indexRightChild < GetSize() && tree_[indexCurrent].first > tree_[indexRightChild].first)) {
+                auto minKeyChild = std::min(tree_[indexLeftChild].first, tree_[indexRightChild].first);
+                auto indexMinKey = mapIndex_.at(minKeyChild);
+                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
+                std::swap(tree_[indexCurrent], tree_[indexMinKey]);
+                indexCurrent = indexMinKey;
+                indexLeftChild = (2 * indexCurrent) + 1;
+                indexRightChild = (2 * indexCurrent) + 2;
+            } else if ((indexLeftChild < GetSize() && tree_[indexCurrent].first > tree_[indexLeftChild].first) &&
+                       (indexRightChild >= GetSize())) {
+                auto minKeyChild = tree_[indexLeftChild].first;
+                auto indexMinKey = mapIndex_.at(minKeyChild);
+                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
+                std::swap(tree_[indexCurrent], tree_[indexMinKey]);
+                indexCurrent = indexMinKey;
+                indexLeftChild = (2 * indexCurrent) + 1;
+                indexRightChild = (2 * indexCurrent) + 2;
             } else {
                 return;
             }
         }
     }
 
-    void HeapifyDown(const K& key) noexcept {
-        index_t indexCurrent;
-        index_t indexLeftChild;
-        index_t indexRightChild;
-        K minKeyChild;
-        index_t indexMinKey;
-        const K keyCurrent = key;
-
-        while(true) {
-            indexCurrent = GetIndex(keyCurrent);
-            indexLeftChild = GetIndexLeftChild(keyCurrent);
-            indexRightChild = GetIndexRightChild(keyCurrent);
-
-
-            if ((tree_[indexCurrent].first > tree_[indexLeftChild].first && indexLeftChild < GetSize()) &&
-                (tree_[indexCurrent].first > tree_[indexRightChild].first && indexRightChild < GetSize())) {
-                minKeyChild = std::min(tree_[indexLeftChild].first, tree_[indexRightChild].first);
-                indexMinKey = mapIndex_.at(minKeyChild);
-                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
-                std::swap(tree_[indexCurrent], tree_[indexMinKey]);
-            } else if ((tree_[indexCurrent].first > tree_[indexLeftChild].first && indexLeftChild < GetSize()) &&
-                       (tree_[indexCurrent].first > tree_[indexRightChild].first && indexRightChild >= GetSize())) {
-                minKeyChild = tree_[indexLeftChild].first;
-                indexMinKey = mapIndex_.at(minKeyChild);
-                std::swap(mapIndex_.at(tree_[indexCurrent].first), mapIndex_.at(minKeyChild));
-                std::swap(tree_[indexCurrent], tree_[indexMinKey]);
-            } else {
-                return;
-            }
-        }
-    }
-
-    void Heapify(const K& key) noexcept {
-        HeapifyUp(key);
-        HeapifyDown(key);
-    }
 
 
     public:                                                     // interaction interface
     MinBinaryHeap() = default;
     void Add(const K& key, const V& value) {
-        if (mapIndex_.count(key) != 0) {
+        if (mapIndex_.find(key) != mapIndex_.end()) {
             throw std::runtime_error("error");
         }
         tree_.push_back(keyValue_t(key, value));
         mapIndex_[key] = tree_.size() - 1;
-        Heapify(key);
+        HeapifyUp(tree_.size() - 1);
     }
 
     void Set(const K& key, const V& value) {
@@ -112,6 +92,7 @@ private:                                                    // service functions
 
     void Delete(const K& key) {
         auto target = Search(key);
+        const auto oldKey = key;
         index_t newIndexLast = mapIndex_.at(key);
 
         std::swap(mapIndex_.at(key), mapIndex_.at(tree_[GetIndexLastNode()].first));
@@ -120,17 +101,21 @@ private:                                                    // service functions
         std::swap(tree_[target.first], tree_[GetIndexLastNode()]);
         tree_.pop_back();
 
-
         if (newIndexLast != GetSize()) {
-            Heapify(tree_[newIndexLast].first);
+            if (oldKey < tree_[newIndexLast].first || target.first == 0) {
+                HeapifyDown(newIndexLast);
+            } else {
+                HeapifyUp(newIndexLast);
+            }
         }
     }
 
     [[nodiscard]] auto Search(const K& key) const -> std::pair<index_t, V> {
-        if (IsEmpty() || mapIndex_.count(key) == 0) {
+        auto iter =  mapIndex_.find(key);
+        if (iter == mapIndex_.end()) {
             throw std::runtime_error("error");
         }
-        return std::make_pair(mapIndex_.at(key), tree_[mapIndex_.at(key)].second);
+        return std::make_pair(iter->second, tree_[mapIndex_.at(key)].second);
     }
 
     [[nodiscard]] auto GetMin() const -> keyIndexValue_t {
@@ -222,7 +207,7 @@ void Print(const MinBinaryHeap<K, V> heap) {
 template <typename K, typename V>
 void Handler(MinBinaryHeap<K, V>& heap) noexcept {
     std::string command, value;
-    int64_t key;
+    int64_t key = 0;
 
 
     while (std::cin >> command) {
@@ -298,5 +283,4 @@ int main() {
 
     return EXIT_SUCCESS;
 }
-
 
