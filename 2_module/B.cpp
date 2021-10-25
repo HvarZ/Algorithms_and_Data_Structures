@@ -16,14 +16,14 @@ public:
 
 public:
     explicit Node(const K& _key, const T&  _value) noexcept : key(_key), value(_value),
-         parent(nullptr), right(nullptr), left(nullptr) {}
+                                                              parent(nullptr), right(nullptr), left(nullptr) {}
 
     Node(const Node& _node) : key(_node.key), value(_node.value),
-         parent(_node.parent), right(_node.right), left(_node.left) {}
+                              parent(_node.parent), right(_node.right), left(_node.left) {}
 
     Node& operator=(const Node& _node) {
         if (this == &_node) {
-           throw std::runtime_error("self - assignment error");
+            throw std::runtime_error("self - assignment error");
         }
         key = _node.key;
         value = _node.value;
@@ -181,6 +181,36 @@ private:
         root_ = node;
     }
 
+    [[nodiscard]] auto FindNode(const K& key) -> Node<K, T>* {
+        if (IsEmpty()) {
+            throw std::runtime_error("error");
+        }
+        if (root_->key == key) {
+            return root_;
+        }
+        auto* current = root_;
+        INFINITY {
+            if (key > current->key) {
+                if (current->right == nullptr) {
+                    Splay(current);
+                    return nullptr;
+                } else {
+                    current = current->right;
+                }
+            } else if (key < current->key) {
+                if (current->left == nullptr) {
+                    Splay(current);
+                    return nullptr;
+                } else {
+                    current = current->left;
+                }
+            } else {
+                Splay(current);
+                return current;
+            }
+        }
+    }
+
 
 public:
     SplayTree() : root_(nullptr) {}
@@ -226,7 +256,7 @@ public:
         if (IsEmpty()) {
             throw std::runtime_error("error");
         }
-        auto target = SearchNode(key);
+        auto target = FindNode(key);
         if (target == nullptr) {
             throw std::runtime_error("error");
         }
@@ -238,7 +268,7 @@ public:
         if (IsEmpty()) {
             throw std::runtime_error("error");
         }
-        auto* target = SearchNode(key);
+        auto* target = FindNode(key);
         if (target == nullptr) {
             throw std::runtime_error("error");
         }
@@ -270,37 +300,15 @@ public:
         delete target;
     }
 
-    [[nodiscard]] auto SearchNode(const K& key) -> Node<K, T>* {
-        if (IsEmpty()) {
+    [[nodiscard]] auto SearchNode(const K& key) -> std::pair<K, T> {
+        auto target = FindNode(key);
+        if (target == nullptr) {
             throw std::runtime_error("error");
         }
-        if (root_->key == key) {
-            return root_;
-        }
-        auto* current = root_;
-        INFINITY {
-            if (key > current->key) {
-                if (current->right == nullptr) {
-                    Splay(current);
-                    return nullptr;
-                } else {
-                    current = current->right;
-                }
-            } else if (key < current->key) {
-                if (current->left == nullptr) {
-                    Splay(current);
-                    return nullptr;
-                } else {
-                    current = current->left;
-                }
-            } else {
-                Splay(current);
-                return current;
-            }
-        }
+        return std::make_pair(target->key, target->value);
     }
 
-    [[nodiscard]] auto GetMin() -> Node<K, T>& {
+    [[nodiscard]] auto GetMin() -> std::pair<K, T> {
         if (IsEmpty()) {
             throw std::runtime_error("error");
         }
@@ -310,14 +318,14 @@ public:
         INFINITY {
             if (current->left == nullptr) {
                 Splay(current);
-                return *current;
+                return std::make_pair(current->key, current->value);
             } else {
                 current = current->left;
             }
         }
     }
 
-    [[nodiscard]] auto GetMax() -> Node<K, T>& {
+    [[nodiscard]] auto GetMax() -> std::pair<K, T> {
         if (IsEmpty()) {
             throw std::runtime_error("error");
         }
@@ -327,74 +335,68 @@ public:
         INFINITY {
             if (current->right == nullptr) {
                 Splay(current);
-                return *current;
+                return std::make_pair(current->key, current->value);
             } else {
                 current = current->right;
             }
         }
     }
 
-    [[nodiscard]] auto GetRoot() const noexcept -> Node<K, T>* {
-        return root_;
+    void Print() const noexcept {
+        if (root_ == nullptr) {
+            std::cout << "_\n";
+            return;
+        }
+        std::cout << "[" << std::to_string(root_->key) << " "
+                  << root_->value << "]\n";
+        std::queue<decltype(root_)> q;
+
+        q.push(root_->left);
+        q.push(root_->right);
+
+        decltype(root_) current;
+
+        size_t elementCounter = 0;
+        size_t numberElements = 2;
+        std::string line;
+
+        while (!q.empty()) {
+            current = q.front();
+            q.pop();
+            if (current != nullptr) {
+                line += "[" + std::to_string(current->key) + " " + current->value
+                        + " " + std::to_string(current->parent->key) + "]";
+                q.push(current->left);
+                q.push(current->right);
+            } else {
+                line += "_";
+                q.push(nullptr);
+                q.push(nullptr);
+            }
+            ++elementCounter;
+            if (elementCounter == numberElements) {
+
+                std::string lineNull = "_";
+                for (size_t j = 1; j < numberElements; ++j)
+                    lineNull += " _";
+
+                if (line != lineNull) {
+                    std::cout << line << '\n';
+                    line.clear();
+                } else {
+                    break;
+                }
+                numberElements <<= 1;
+                elementCounter = 0;
+            } else {
+                line += " ";
+            }
+        }
     }
 
 private:
     Node<K, T>* root_;
 };
-
-
-template <typename K, typename T>
-void Print(const SplayTree<K, T>& tree) noexcept {
-    if (tree.GetRoot() == nullptr) {
-        std::cout << "_\n";
-        return;
-    }
-    std::cout << "[" << std::to_string(tree.GetRoot()->key) << " "
-                     << tree.GetRoot()->value << "]\n";
-    std::queue<decltype(tree.GetRoot())> q;
-
-    q.push(tree.GetRoot()->left);
-    q.push(tree.GetRoot()->right);
-
-    decltype(tree.GetRoot()) current;
-
-    size_t elementCounter = 0;
-    size_t numberElements = 2;
-    std::string line;
-
-    while (!q.empty()) {
-        current = q.front();
-        q.pop();
-        if (current != nullptr) {
-            line += "[" + std::to_string(current->key) + " " + current->value
-                        + " " + std::to_string(current->parent->key) + "]";
-            q.push(current->left);
-            q.push(current->right);
-        } else {
-            line += "_";
-            q.push(nullptr);
-            q.push(nullptr);
-        }
-        ++elementCounter;
-        if (elementCounter == numberElements) {
-
-            std::string lineNull = "_";
-            for (size_t j = 1; j < numberElements; ++j)
-                lineNull += " _";
-
-            if (line != lineNull) {
-                std::cout << line << '\n';
-                line.clear();
-            } else {
-                break;
-            }
-            numberElements <<= 1;
-            elementCounter = 0;
-        } else {
-            line += " ";
-        }
-    }
-}
 
 
 template <typename K, typename T>
@@ -429,30 +431,28 @@ void Handler(SplayTree<K, T>& tree) {
             std::cin >> key;
             try {
                 auto target = tree.SearchNode(key);
-                if (target == nullptr) {
-                    std::cout << "0\n";
-                } else {
-                    std::cout << "1 " << target->value << std::endl;
-                }
+
+                std::cout << "1 " << target.second << std::endl;
+
             } catch (std::runtime_error& e) {
                 std::cout << "0" << std::endl;
             }
         } else if (command == "min") {
             try {
                 auto target = tree.GetMin();
-                std::cout << target.key << " " << target.value << std::endl;
+                std::cout << target.first << " " << target.second << std::endl;
             } catch (std::runtime_error& e) {
                 std::cout << "error" << std::endl;
             }
         } else if (command == "max") {
             try {
                 auto target = tree.GetMax();
-                std::cout << target.key << " " << target.value << std::endl;
+                std::cout << target.first << " " << target.second << std::endl;
             } catch (std::runtime_error& e) {
                 std::cout << "error" << std::endl;
             }
         } else if (command == "print") {
-            Print(tree);
+            tree.Print();
         }
     }
 }
@@ -464,4 +464,3 @@ int main() {
 
     return EXIT_SUCCESS;
 }
-
