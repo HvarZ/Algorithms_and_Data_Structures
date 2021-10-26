@@ -171,7 +171,7 @@ private:
 };
 
 template <typename K, typename V>
-void Print(const MinBinaryHeap<K, V> heap) {
+void Print(const MinBinaryHeap<K, V>& heap) {
     if (heap.IsEmpty()) {
         std::cout << "_" << std::endl;
         return;
