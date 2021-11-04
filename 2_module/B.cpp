@@ -4,6 +4,7 @@
 #include <queue>
 #include <string>
 #include <algorithm>
+#include <ostream>
 
 template <typename K, typename T>
 struct Node {
@@ -342,12 +343,12 @@ public:
         }
     }
 
-    void Print() const noexcept {
+    void Print(std::ostream& out) const noexcept {
         if (root_ == nullptr) {
-            std::cout << "_\n";
+            out << "_\n";
             return;
         }
-        std::cout << "[" << std::to_string(root_->key) << " "
+        out << "[" << std::to_string(root_->key) << " "
                   << root_->value << "]\n";
         std::queue<decltype(root_)> q;
 
@@ -381,7 +382,7 @@ public:
                     lineNull += " _";
 
                 if (line != lineNull) {
-                    std::cout << line << '\n';
+                    out << line << '\n';
                     line.clear();
                 } else {
                     break;
@@ -400,7 +401,7 @@ private:
 
 
 template <typename K, typename T>
-void Handler(SplayTree<K, T>& tree) {
+void Handler(std::ostream& out, SplayTree<K, T>& tree) {
     std::string buffer , command, value;
     int64_t key;
     while (std::cin >> command) {
@@ -411,48 +412,48 @@ void Handler(SplayTree<K, T>& tree) {
             try {
                 tree.AddNode(key, value);
             } catch (std::runtime_error& e) {
-                std::cout << "error" << std::endl;
+                out << "error" << std::endl;
             }
         } else if (command == "set") {
             std::cin >> key >> value;
             try {
                 tree.SetNode(key, value);
             } catch (std::runtime_error& e) {
-                std::cout << "error" << std::endl;
+                out << "error" << std::endl;
             }
         } else if (command == "delete") {
             std::cin >> key;
             try {
                 tree.DeleteNode(key);
             } catch (std::exception& e) {
-                std::cout << "error" << std::endl;
+                out << "error" << std::endl;
             }
         } else if (command == "search") {
             std::cin >> key;
             try {
                 auto target = tree.SearchNode(key);
 
-                std::cout << "1 " << target.second << std::endl;
+                out << "1 " << target.second << std::endl;
 
             } catch (std::runtime_error& e) {
-                std::cout << "0" << std::endl;
+                out << "0" << std::endl;
             }
         } else if (command == "min") {
             try {
                 auto target = tree.GetMin();
-                std::cout << target.first << " " << target.second << std::endl;
+                out << target.first << " " << target.second << std::endl;
             } catch (std::runtime_error& e) {
-                std::cout << "error" << std::endl;
+                out << "error" << std::endl;
             }
         } else if (command == "max") {
             try {
                 auto target = tree.GetMax();
-                std::cout << target.first << " " << target.second << std::endl;
+                out << target.first << " " << target.second << std::endl;
             } catch (std::runtime_error& e) {
-                std::cout << "error" << std::endl;
+                out << "error" << std::endl;
             }
         } else if (command == "print") {
-            tree.Print();
+            tree.Print(out);
         }
     }
 }
@@ -460,7 +461,7 @@ void Handler(SplayTree<K, T>& tree) {
 
 int main() {
     SplayTree<int64_t, std::string> tree;
-    Handler(tree);
+    Handler(std::cout, tree);
 
     return EXIT_SUCCESS;
 }
