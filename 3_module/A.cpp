@@ -12,7 +12,7 @@ namespace backpack {
 
   auto getBackpack(const std::vector<weightCost> &gems,
                    const size_t maxWeight) -> resultType {
-    size_t sumCosts = std::accumulate(
+    auto sumCosts = std::accumulate(
         gems.begin(), gems.end(), 0,
         [](size_t sum, weightCost pair) { return sum + pair.second; });
 
@@ -22,7 +22,7 @@ namespace backpack {
 
     size_t currentIndex = 1;
     for (const auto &[weight, cost] : gems) {
-      for (size_t i = sumCosts - 1; i >= weight; --i) {
+      for (size_t i = sumCosts - 1; i >= cost; --i) {
         if (dynamicData[i - cost].first < dynamicData[i].first - weight) {
           dynamicData[i] = dynamicData[i - cost];
           dynamicData[i].first += weight;
@@ -55,14 +55,24 @@ namespace backpack {
   }
 }
 
+auto isInteger(double number) noexcept -> bool {
+  return number - static_cast<int>(number) == 0;
+}
+
 int main() {
-  size_t maxWeight, currentWeight, currentCost;
+  double maxWeight, currentWeight, currentCost;
   std::cin >> maxWeight;
 
   std::vector<backpack::weightCost> output;
 
   while(std::cin >> currentWeight >> currentCost) {
-    output.emplace_back(std::make_pair(currentWeight, currentCost));
+    if (currentWeight < 0 || currentCost < 0 ||
+        !isInteger(currentWeight) || !isInteger(currentCost)) {
+      std::cout << "error\n";
+      continue;
+    }
+    output.emplace_back(std::make_pair(static_cast<size_t>(currentWeight),
+                                       static_cast<size_t>(currentCost)));
   }
 
   auto backpack = backpack::getBackpack(output, maxWeight);
