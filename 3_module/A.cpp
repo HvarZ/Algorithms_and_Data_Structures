@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <numeric>
 #include <stdexcept>
+#include <cmath>
+#include <cstdlib>
 
 namespace backpack {
   using resultType = std::tuple<size_t, size_t, size_t>;
@@ -21,6 +23,7 @@ namespace backpack {
     dynamicData.front().first = 0;
 
     size_t currentIndex = 1;
+    size_t sumWeight = 0;
     for (const auto &[weight, cost] : gems) {
       for (size_t i = sumCosts - 1; i >= cost; --i) {
         if (dynamicData[i - cost].first < dynamicData[i].first - weight) {
@@ -29,7 +32,13 @@ namespace backpack {
           dynamicData[i].second |= (1 << currentIndex);
         }
       }
+      sumWeight += weight;
       ++currentIndex;
+    }
+
+    if (sumWeight < maxWeight) {
+      return std::make_tuple(sumWeight, sumCosts,
+                 static_cast<size_t>(std::pow(2, gems.size()) - 1) << 1);
     }
 
     for (auto iter = dynamicData.rbegin(); iter != dynamicData.rend(); iter++) {
@@ -55,31 +64,62 @@ namespace backpack {
   }
 }
 
-auto isInteger(double number) noexcept -> bool {
-  return number - static_cast<int>(number) == 0;
+auto isIntegerNumber(const std::string& command) noexcept -> bool {
+  return std::all_of(command.begin(), command.end(),
+              [](const char symbol) { return isdigit(symbol) > 0; });
 }
 
-int main() {
-  double maxWeight, currentWeight, currentCost;
-  std::cin >> maxWeight;
+auto getCommand(const std::string& command) -> std::pair<size_t, size_t> {
+  const auto ptrSpace = std::find(command.begin(), command.end(), ' ');
+  std::string first(command.begin(), ptrSpace);
 
-  std::vector<backpack::weightCost> output;
+  if (ptrSpace == command.end()) {
+    throw std::logic_error("error");
+  }
+  std::string second(std::next(ptrSpace), command.end());
 
-  while(std::cin >> currentWeight >> currentCost) {
-    if (currentWeight < 0 || currentCost < 0 ||
-        !isInteger(currentWeight) || !isInteger(currentCost)) {
-      std::cout << "error\n";
-      continue;
-    }
-    output.emplace_back(std::make_pair(static_cast<size_t>(currentWeight),
-                                       static_cast<size_t>(currentCost)));
+  if (!isIntegerNumber(first) || !isIntegerNumber(second)) {
+    throw std::logic_error("error");
   }
 
-  auto backpack = backpack::getBackpack(output, maxWeight);
-  std::cerr << std::get<0>(backpack) << " " << std::get<1>(backpack) << std::endl;
+  return std::make_pair(std::stoul(first), std::stoul(second));
+}
 
-  backpack::printBitset(std::cerr, std::get<2>(backpack));
 
+
+int main() {
+  std::string currentWeight, currentCost;
+  std::string buffer;
+  std::getline(std::cin, buffer, '\n');
+
+  while (!isIntegerNumber(buffer) || buffer.empty()) {
+    if (buffer.empty()) {
+      std::getline(std::cin, buffer, '\n');
+      continue;
+    }
+    std::cout << "error\n";
+    std::getline(std::cin, buffer, '\n');
+  }
+  auto maxWeight = std::stoul(buffer);
+  std::vector<backpack::weightCost> input;
+
+  while (std::getline(std::cin, buffer, '\n')) {
+    if (buffer.empty()) {
+      continue;
+    }
+    try {
+      auto weightCost = getCommand(buffer);
+      input.emplace_back(std::move(weightCost));
+    } catch (...) {
+      std::cout << "error\n";
+    }
+  }
+
+  auto backpack = backpack::getBackpack(input, maxWeight);
+  std::cout << std::get<0>(backpack) << " " << std::get<1>(backpack) << std::endl;
+
+  backpack::printBitset(std::cout, std::get<2>(backpack));
 
   return EXIT_SUCCESS;
 }
+
