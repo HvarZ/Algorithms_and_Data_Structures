@@ -6,25 +6,28 @@
 #include <algorithm>
 
 #define MAX_CHUNK_SIZE 8
-
-auto isPrime(const uint64_t number) -> bool {
-  for (uint64_t i = 2; i <= std::sqrt(number); ++i) {
-    if (number % i == 0) {
-      return false;
-    }
-  }
-  return true;
-}
+#define FIRST_SIEVE_LIMIT 11
 
 class Bitset {
 public:
+  enum class ConstructorParameters : uint8_t {
+    EMPTY = 0,
+    FULL = 255
+  };
+
+public:
   Bitset() = delete;
-  explicit Bitset(const uint64_t size)
-      : data_(std::vector<uint8_t>(std::ceil(static_cast<float>(size) / MAX_CHUNK_SIZE), {0})),
-        size_(size) {}
+  explicit Bitset(const uint64_t size, const ConstructorParameters& parameter = ConstructorParameters::EMPTY)
+      : data_(std::vector<uint8_t>(std::ceil(static_cast<float>(size) / MAX_CHUNK_SIZE), {static_cast<uint8_t>(parameter)})),
+        size_(size) {
+  }
 
   void add(const uint64_t index) noexcept {
     data_[index / MAX_CHUNK_SIZE] |= (1 << (index % MAX_CHUNK_SIZE));
+  }
+
+  void reset(const uint64_t index) noexcept {
+    data_[index / MAX_CHUNK_SIZE] &= ~(1 << (index % MAX_CHUNK_SIZE));
   }
 
   [[nodiscard]] auto exist(const uint64_t index) const noexcept -> bool {
@@ -91,14 +94,19 @@ private:
 
 private:
   void fillPrimeNumbers() noexcept {
-    uint64_t counter = 0;
-    uint64_t number = 2;
-    while (counter != hashSize_) {
-      if (isPrime(number) == true) {
-        primeNumbers_.push_back(number);
-        ++counter;
+    uint64_t size = hashSize_ <= 5 ?
+                    FIRST_SIEVE_LIMIT :
+                    hashSize_ * std::log(hashSize_) + hashSize_ * std::log(std::log(hashSize_));
+    Bitset bitset(size, Bitset::ConstructorParameters::FULL);
+    for (int p = 2; p < bitset.size() + 1; p++) {
+      if (bitset.exist(p)) {
+        if (primeNumbers_.size() == hashSize_) {
+          break;
+        }
+        primeNumbers_.push_back(p);
+        for (int j = p * p; j < bitset.size() + 1; j += p)
+          bitset.reset(j);
       }
-      ++number;
     }
   }
 
@@ -112,7 +120,7 @@ void print(std::ostream& out, const BloomFilter& filter) noexcept {
   uint8_t bufferChunk;
   uint8_t maxValueChunk;
   const auto remainder = filter.bitset_.size() % MAX_CHUNK_SIZE;
-  const auto numberChunks = std::ceil(static_cast<float>(filter.bitset_.size()) / 8);
+  const auto numberChunks = std::ceil(static_cast<float>(filter.bitset_.size()) / MAX_CHUNK_SIZE);
   for (uint64_t i = 0; i < numberChunks; ++i) {
     maxValueChunk = UINT8_MAX;
     if (i == numberChunks - 1 && remainder != 0) {
@@ -133,7 +141,6 @@ void print(std::ostream& out, const BloomFilter& filter) noexcept {
       maxValueChunk >>= 1;
     }
   }
-  out << std::endl;
 }
 
 namespace Parsing {
@@ -239,6 +246,7 @@ int main() {
         auto commandId = Parsing::getCommand(command);
         if (commandId == "print") {
           print(std::cout, *iterFilter);
+          std::cout << std::endl;
         } else if (commandId == "add") {
           iterFilter->add(Parsing::getValue(command));
         } else if (commandId == "search") {
