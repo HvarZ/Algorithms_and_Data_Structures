@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="farid_labs"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.A">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.A" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.A"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.A/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.A" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.A/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.B">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.B"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.B/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.B/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="3.C">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/3.C" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 3.C"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="3.C/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/3.C" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 3.C/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="3.A">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/3.A" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 3.A"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="3.A/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/3.A" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 3.A/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="2.D">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/2.D" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 2.D"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="2.D/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/2.D" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 2.D/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="3.B">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/3.B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 3.B"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="3.B/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/3.B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 3.B/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="2.C">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/2.C" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 2.C"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="2.C/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/2.C" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 2.C/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="2.B">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/2.B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 2.B"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="2.B/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/2.B" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 2.B/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.D">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.D" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.D"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.D/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.D" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.D/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.C">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.C" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.C"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="1.C/fast">
+				<Option output="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/1.C" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 1.C/fast"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/Library/Developer/CommandLineTools/usr/bin/make -j4 -f &quot;/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/1_module/A.cpp">
+			<Option target="1.A"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/1_module/B.cpp">
+			<Option target="1.B"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/1_module/C.cpp">
+			<Option target="1.C"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/1_module/D.cpp">
+			<Option target="1.D"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/2_module/B.cpp">
+			<Option target="2.B"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/2_module/C.cpp">
+			<Option target="2.C"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/2_module/D.cpp">
+			<Option target="2.D"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/3_module/A.cpp">
+			<Option target="3.A"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/3_module/B.cpp">
+			<Option target="3.B"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/3_module/C.cpp">
+			<Option target="3.C"/>
+		</Unit>
+		<Unit filename="/Users/hvarz/CLionProjects/e_labs/Algorithms_and_Data_Structures/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
